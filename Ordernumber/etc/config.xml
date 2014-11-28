@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+<!-- declare module's version information -->
+        <OpenTools_Ordernumber>
+<!-- this version number will be used for database upgrades -->
+            <version>0.1.0</version>
+            <depends>
+                <Mage_Sales />
+            </depends>
+        </OpenTools_Ordernumber>
+    </modules>
+ 
+    <global>
+<!-- declare model group for new module -->
+        <models>
+<!-- model group alias to be used in Mage::getModel() -->
+            <ordernumber>
+<!-- base class name for the model group -->
+                <class>OpenTools_Ordernumber_Model</class>
+            </ordernumber>
+        </models>
+        <helpers>
+            <ordernumber>
+                <class>OpenTools_Ordernumber_Helper</class>
+            </ordernumber>
+        </helpers>
+        <events>
+            <sales_order_invoice_save_before>
+                <observers>
+                    <sales_order_invoice_save_before>
+                        <type>singleton</type>
+                        <class>OpenTools_Ordernumber_Model_Observer</class>
+                        <method>sales_order_invoice_save_before</method>
+                    </sales_order_invoice_save_before>
+                </observers>
+            </sales_order_invoice_save_before>
+            <sales_order_shipment_save_before>
+                <observers>
+                    <sales_order_shipment_save_before>
+                        <type>singleton</type>
+                        <class>OpenTools_Ordernumber_Model_Observer</class>
+                        <method>sales_order_shipment_save_before</method>
+                    </sales_order_shipment_save_before>
+                </observers>
+            </sales_order_shipment_save_before>
+            <sales_order_creditmemo_save_before>
+                <observers>
+                    <sales_order_creditmemo_save_before>
+                        <type>singleton</type>
+                        <class>OpenTools_Ordernumber_Model_Observer</class>
+                        <method>sales_order_creditmemo_save_before</method>
+                    </sales_order_creditmemo_save_before>
+                </observers>
+            </sales_order_creditmemo_save_before>
+        </events>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <ordernumber>
+                                            <title>OpenTools Ordernumber Extension</title>
+                                        </ordernumber>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <default>
+         <ordernumber>
+            <settings>
+                <active>0</active>
+            </settings>
+        </ordernumber>
+    </default>
+
+ 
+</config>
