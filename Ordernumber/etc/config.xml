@@ -12,45 +12,87 @@
     </modules>
  
     <global>
-<!-- declare model group for new module -->
         <models>
-<!-- model group alias to be used in Mage::getModel() -->
-            <ordernumber>
-<!-- base class name for the model group -->
+            <opentools_ordernumber>
                 <class>OpenTools_Ordernumber_Model</class>
-            </ordernumber>
+                <resourceModel>ordernumber_resource</resourceModel>
+            </opentools_ordernumber>
+            <ordernumber_resource>
+                <class>OpenTools_Ordernumber_Model_Resource</class>
+                <entities>
+                    <ordernumber>
+                        <table>opentools_ordernumber</table>
+                    </ordernumber>
+                </entities>
+            </ordernumber_resource>
         </models>
         <helpers>
             <ordernumber>
                 <class>OpenTools_Ordernumber_Helper</class>
             </ordernumber>
         </helpers>
+        <resources>
+            <opentools_ordernumber_setup>
+                <setup>
+                    <module>OpenTools_Ordernumber</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </opentools_ordernumber_setup>
+            <opentools_ordernumber_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </opentools_ordernumber_write>
+            <opentools_ordernumber_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </opentools_ordernumber_read>
+        </resources>
         <events>
+            <sales_model_service_quote_submit_before>
+                <observers>
+                    <opentools_ordernumber>
+                        <type>singleton</type>
+                        <class>OpenTools_Ordernumber_Model_Observer</class>
+                        <method>sales_model_service_quote_submit_before</method>
+                    </opentools_ordernumber>
+                </observers>
+            </sales_model_service_quote_submit_before>
+            <sales_order_save_before>
+                <observers>
+                    <opentools_ordernumber>
+                        <type>singleton</type>
+                        <class>OpenTools_Ordernumber_Model_Observer</class>
+                        <method>sales_order_save_before</method>
+                    </opentools_ordernumber>
+                </observers>
+            </sales_order_save_before>
             <sales_order_invoice_save_before>
                 <observers>
-                    <sales_order_invoice_save_before>
+                    <opentools_ordernumber>
                         <type>singleton</type>
                         <class>OpenTools_Ordernumber_Model_Observer</class>
                         <method>sales_order_invoice_save_before</method>
-                    </sales_order_invoice_save_before>
+                    </opentools_ordernumber>
                 </observers>
             </sales_order_invoice_save_before>
             <sales_order_shipment_save_before>
                 <observers>
-                    <sales_order_shipment_save_before>
+                    <opentools_ordernumber>
                         <type>singleton</type>
                         <class>OpenTools_Ordernumber_Model_Observer</class>
                         <method>sales_order_shipment_save_before</method>
-                    </sales_order_shipment_save_before>
+                    </opentools_ordernumber>
                 </observers>
             </sales_order_shipment_save_before>
             <sales_order_creditmemo_save_before>
                 <observers>
-                    <sales_order_creditmemo_save_before>
+                    <opentools_ordernumber>
                         <type>singleton</type>
                         <class>OpenTools_Ordernumber_Model_Observer</class>
                         <method>sales_order_creditmemo_save_before</method>
-                    </sales_order_creditmemo_save_before>
+                    </opentools_ordernumber>
                 </observers>
             </sales_order_creditmemo_save_before>
         </events>
@@ -77,12 +119,34 @@
         </acl>
     </adminhtml>
     <default>
-         <ordernumber>
+        <ordernumber>
             <settings>
                 <active>0</active>
             </settings>
+            <ordernumbers>
+                <active>0</active>
+                <format>Order-[year]-#</format>
+                <digits>0</digits>
+                <global>0</global>
+            </ordernumbers>
+            <invoicenumbers>
+                <active>0</active>
+                <format>Invoice-[year]-#</format>
+                <digits>0</digits>
+                <global>0</global>
+            </invoicenumbers>
+            <shipmentnumbers>
+                <active>0</active>
+                <format>Shipment-[year]-#</format>
+                <digits>0</digits>
+                <global>0</global>
+            </shipmentnumbers>
+            <creditmemonumbers>
+                <active>0</active>
+                <format>CreditMemo-[year]-#</format>
+                <digits>0</digits>
+                <global>0</global>
+            </creditmemonumbers>
         </ordernumber>
     </default>
-
- 
 </config>

@@ -23,7 +23,7 @@
     <modules>
         <OpenTools_Ordernumber>
             <active>true</active>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
             <depends>
                 <Mage_Sales />
             </depends>

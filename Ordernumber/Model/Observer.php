@@ -20,93 +20,105 @@
  * @copyright  Copyright (c) 2010 Fooman Limited (http://www.fooman.co.nz)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OpenTools_Ordernumber_Model_Observer
+class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
 {
-
-    public function sales_order_invoice_save_before ($observer)
-    {
-        $invoice = $observer->getInvoice();
-        if (!$invoice->getId()) {
-/*            $order = $invoice->getOrder();
-            $storeId = $order->getStore()->getStoreId();
-            $prefix = Mage::getStoreConfig('sameorderinvoicenumber/settings/invoiceprefix',
-                            $storeId);
-                $newInvoiceNr = 0;
-                $currentPostfix = 0;
-                while (!$newInvoiceNr) {
-                    if ($currentPostfix) {
-                        $newInvoiceNr = $prefix . $order->getIncrementId() . '-' . $currentPostfix;
-                    } else {
-                        $newInvoiceNr = $prefix . $order->getIncrementId();
-                    }
-                    $collection = Mage::getModel('sales/order_invoice')->getCollection()->addFieldToFilter('increment_id',
-                            $newInvoiceNr);
-                    if ($collection->getAllIds()) {
-                        //number already exists
-                        $newInvoiceNr = 0;
-                        $currentPostfix++;
-                    } else {
-                        $invoice->setIncrementId($newInvoiceNr);
-                    }
-                }*/
-        }
+     public function _construct()
+     {
+         parent::_construct();
+         $this->_init('ordernumber/ordernumber');
+     }
+ 
+    protected $_dbModel = null;
+    protected function _getModel() {
+        return Mage::getModel('opentools_ordernumber/ordernumber');
+    }
+    
+    public function getModel() {
+        if (is_null($this->_dbModel)) 
+            $this->_dbModel = $this->_getModel();
+        return $this->_dbModel;
     }
 
-    public function sales_order_shipment_save_before ($observer)
-    {
-        $shipment = $observer->getShipment();
-        if (!$shipment->getId()) {
-/*            $order = $shipment->getOrder();
-            $storeId = $order->getStore()->getStoreId();
-            $prefix = Mage::getStoreConfig('sameorderinvoicenumber/settings/shipmentprefix',
-                            $storeId);
-                $newShipmentNr = 0;
-                $currentPostfix = 0;
-                while (!$newShipmentNr) {
-                    if ($currentPostfix) {
-                        $newShipmentNr = $prefix . $order->getIncrementId() . '-' . $currentPostfix;
-                    } else {
-                        $newShipmentNr = $prefix . $order->getIncrementId();
-                    }
-                    $collection = Mage::getModel('sales/order_shipment')->getCollection()->addFieldToFilter('increment_id',
-                            $newShipmentNr);
-                    if ($collection->getAllIds()) {
-                        //number already exists
-                        $newShipmentNr = 0;
-                        $currentPostfix++;
-                    } else {
-                        $shipment->setIncrementId($newShipmentNr);
-                    }
-                }*/
-        }
+    // This trigger is called directly after the increment ID is reserved for an order
+    // TODO: Ideally, we would overwrite the reserveOrderId function!
+    //       Then magento would not create/reserve an order in the first place
+    public function sales_model_service_quote_submit_before ($observer) {
+        $order = $observer->getEvent()->getOrder();
+        return $this->handle_new_number('order', $order, $order);
+    }
+    public function sales_order_save_before ($observer) {
+        $order = $observer->getEvent()->getOrder();
+        return $this->handle_new_number('order', $order, $order);
     }
 
-    public function sales_order_creditmemo_save_before ($observer)
-    {
-        $creditmemo = $observer->getCreditmemo();
-        if (!$creditmemo->getId()) {
-/*            $order = $creditmemo->getOrder();
-            $storeId = $order->getStore()->getStoreId();
-            $prefix = Mage::getStoreConfig('sameorderinvoicenumber/settings/creditmemoprefix',
-                            $storeId);
-                $newCreditmemoNr = 0;
-                $currentPostfix = 0;
-                while (!$newCreditmemoNr) {
-                    if ($currentPostfix) {
-                        $newCreditmemoNr = $prefix . $order->getIncrementId() . '-' . $currentPostfix;
-                    } else {
-                        $newCreditmemoNr = $prefix . $order->getIncrementId();
-                    }
-                    $collection = Mage::getModel('sales/order_creditmemo')->getCollection()->addFieldToFilter('increment_id',
-                            $newCreditmemoNr);
-                    if ($collection->getAllIds()) {
-                        //number already exists
-                        $newCreditmemoNr = 0;
-                        $currentPostfix++;
-                    } else {
-                        $creditmemo->setIncrementId($newCreditmemoNr);
-                    }
-                }*/
+    public function sales_order_invoice_save_before ($observer) {
+        $invoice = $observer->getEvent()->getInvoice();
+        return $this->handle_new_number('invoice', $invoice, $invoice->getOrder());
+    }
+
+    public function sales_order_shipment_save_before ($observer) {
+        $shipment = $observer->getEvent()->getShipment();
+        return $this->handle_new_number('shipment', $shipment, $shipment->getOrder());
+    }
+
+    public function sales_order_creditmemo_save_before ($observer) {
+        $creditmemo = $observer->getEvent()->getCreditmemo();
+        return $this->handle_new_number('creditmemo', $creditmemo, $creditmemo->getOrder());
+    }
+
+    public function handle_new_number ($nrtype, $object, $order) {
+        $storeId = $order->getStore()->getStoreId();
+        $cfgprefix = 'ordernumber/'.$nrtype.'numbers';
+        $enabled = Mage::getStoreConfig($cfgprefix.'/active', $storeId);
+
+        if ($enabled && !$object->getId() && !$object->getOrdernumberProcessed()) {
+            // This trigger might be called twice, so ignore it the second time!
+            $object->setOrdernumberProcessed(true);
+
+            $format = Mage::getStoreConfig($cfgprefix.'/format', $storeId);
+            $global = Mage::getStoreConfig($cfgprefix.'/global', $storeId);
+            $digits = Mage::getStoreConfig($cfgprefix.'/digits', $storeId);
+
+            // First, replace all variables:
+            $helper = Mage::helper('ordernumber');
+            $info = array('order'=>$order, $nrtype=>$object);
+            $nr = $helper->replace_fields ($format, $nrtype, $info);
+
+            // Split at a | to get the number format and a possibly different counter increment format
+            // If a separate counter format is given after the |, use it, otherwise reuse the number format itself as counter format
+            $parts = explode ("|", $nr);
+            $format = $parts[0];
+            $counterfmt = ($global==1)?"":$parts[(count($parts)>1)?1:0];
+            
+            // Now find the next counter that does not lead to duplicate 
+            $newnumber = null;
+            $model = $this->getModel();
+            
+            $count = 0;
+            $created = false;
+            // Make up to 150 attempts to create a number...
+            while (empty($newnumber) && (count<150)) { 
+                $count += 1;
+
+                // Find the next counter value
+                $count = $model->getCounterValueIncremented($nrtype, $counterfmt);
+                $newnumber = str_replace ("#", sprintf('%0' . (int)$padding . 's', $count), $format);
+                
+                // Check whether that number is already in use. If so, attempt to create the next number:
+                $modelname=($nrtype=='order') ? 'sales/order' : ('sales/order_'.$nrtype);
+                $collection = Mage::getModel($modelname)->getCollection()->addFieldToFilter('increment_id', $newnumber);
+                if ($collection->getAllIds()) {
+                    Mage::Log("$nrtype number $newnumber already in use, trying again", null, 'ordernumber.log');
+                    //number already exists => next attempt in the loop
+                    $newnumber = null;
+                } else {
+                    $object->setIncrementId($newnumber);
+                    $created = true;
+                }
+            }
+            if (!$created) {
+                Mage::Log("Unable to create $nrtype number for counter format $nr (name $counterfmt)...", null, 'ordernumber.log');
+            }
         }
     }
 
