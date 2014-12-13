@@ -80,7 +80,7 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
             $digits = Mage::getStoreConfig($cfgprefix.'/digits', $storeId);
 
             // First, replace all variables:
-            $helper = Mage::helper('ordernumber');
+            $helper = Mage::helper('opentools/ordernumber');
             $info = array('order'=>$order, $nrtype=>$object);
             $nr = $helper->replace_fields ($format, $nrtype, $info);
 
@@ -102,7 +102,7 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
 
                 // Find the next counter value
                 $count = $model->getCounterValueIncremented($nrtype, $counterfmt);
-                $newnumber = str_replace ("#", sprintf('%0' . (int)$padding . 's', $count), $format);
+                $newnumber = str_replace ("#", sprintf('%0' . (int)$digits . 's', $count), $format);
                 
                 // Check whether that number is already in use. If so, attempt to create the next number:
                 $modelname=($nrtype=='order') ? 'sales/order' : ('sales/order_'.$nrtype);

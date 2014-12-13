@@ -49,6 +49,7 @@
                 </connection>
             </opentools_ordernumber_read>
         </resources>
+        
         <events>
             <sales_model_service_quote_submit_before>
                 <observers>
@@ -97,6 +98,7 @@
             </sales_order_creditmemo_save_before>
         </events>
     </global>
+        
     <adminhtml>
         <acl>
             <resources>
