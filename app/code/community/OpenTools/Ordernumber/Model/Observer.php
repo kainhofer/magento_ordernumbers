@@ -80,7 +80,7 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
             $digits = Mage::getStoreConfig($cfgprefix.'/digits', $storeId);
 
             // First, replace all variables:
-            $helper = Mage::helper('opentools/ordernumber');
+            $helper = Mage::helper('ordernumber');
             $info = array('order'=>$order, $nrtype=>$object);
             $nr = $helper->replace_fields ($format, $nrtype, $info);
 

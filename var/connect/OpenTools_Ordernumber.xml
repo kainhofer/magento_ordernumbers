@@ -1,0 +1,85 @@
+<_>
+   <form_key>1yggEOTnk5zBnKki</form_key>
+   <name>OpenTools_Ordernumber</name>
+   <channel>community</channel>
+   <version_ids>
+      <version_ids>2</version_ids>
+   </version_ids>
+   <summary>Customize order, invoice, shipment and creditmemo numbers.</summary>
+   <description>This extensions allows you to freely customize the order, invoice, shipment and creditmemo numbers. Even multiple counters are possible.</description>
+   <license>OSL</license>
+   <license_uri/>
+   <version>0.1.0</version>
+   <stability>devel</stability>
+   <notes>Very first released version, should correctly assign all numbers, though.</notes>
+   <authors>
+      <name>
+         <name>Reinhold Kainhofer</name>
+      </name>
+      <user>
+         <user>opentools</user>
+      </user>
+      <email>
+         <email>office@open-tools.net</email>
+      </email>
+   </authors>
+   <depends_php_min>5.3.0</depends_php_min>
+   <depends_php_max>999999.9.9</depends_php_max>
+   <depends>
+      <package>
+         <name>
+            <name/>
+         </name>
+         <channel>
+            <channel/>
+         </channel>
+         <min>
+            <min/>
+         </min>
+         <max>
+            <max/>
+         </max>
+         <files>
+            <files>       </files>
+         </files>
+      </package>
+      <extension>
+         <name>
+            <name>Core</name>
+         </name>
+         <min>
+            <min/>
+         </min>
+         <max>
+            <max/>
+         </max>
+      </extension>
+   </depends>
+   <contents>
+      <target>
+         <target>magelocal</target>
+         <target>magecommunity</target>
+         <target>mageetc</target>
+      </target>
+      <path>
+         <path/>
+         <path>OpenTools/Ordernumber/</path>
+         <path>modules/OpenTools_Ordernumber.xml</path>
+      </path>
+      <type>
+         <type>file</type>
+         <type>dir</type>
+         <type>file</type>
+      </type>
+      <include>
+         <include/>
+         <include/>
+         <include/>
+      </include>
+      <ignore>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+      </ignore>
+   </contents>
+</_>
