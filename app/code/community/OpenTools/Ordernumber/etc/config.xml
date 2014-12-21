@@ -10,7 +10,7 @@
             </depends>
         </OpenTools_Ordernumber>
     </modules>
- 
+
     <global>
         <models>
             <opentools_ordernumber>
@@ -49,7 +49,12 @@
                 </connection>
             </opentools_ordernumber_read>
         </resources>
-        
+        <blocks>
+            <opentools_ordernumber>
+                <class>OpenTools_Ordernumber_Block</class>
+            </opentools_ordernumber>
+        </blocks>
+
         <events>
             <sales_model_service_quote_submit_before>
                 <observers>
@@ -98,7 +103,7 @@
             </sales_order_creditmemo_save_before>
         </events>
     </global>
-        
+
     <adminhtml>
         <acl>
             <resources>
@@ -119,7 +124,17 @@
                 </admin>
             </resources>
         </acl>
+        <translate>
+            <modules>
+                <opentools_ordernumber>
+                    <files>
+                        <default>OpenTools_Ordernumber.csv</default>
+                    </files>
+                </opentools_ordernumber>
+            </modules>
+        </translate>
     </adminhtml>
+        </adminhtml>
     <default>
         <ordernumber>
             <settings>

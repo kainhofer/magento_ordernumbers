@@ -39,26 +39,60 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </format>
+                        <scope translate="label">
+                            <label>Scope of the counter</label>
+                            <tooltip>Separate counters can be used per store or per website. Alternatively, all counters can be used accoss all stores simultaneously.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_scope</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </scope>
+                        <reset translate="label">
+                            <label>Counter "Reset"</label>
+                            <tooltip></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_reset</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </reset>
+                        <counterresetformat translate="label">
+                            <label>Format for counter names</label>
+                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active><reset>-1</reset></depends>
+                        </counterresetformat>
                         <digits translate="label">
                             <label>Number of digits for the counter</label>
                             <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
-                            <sort_order>3</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </digits>
-                        <global translate="label">
-                            <label>Use a global counter with no reset</label>
-                            <frontend_type>checkbox</frontend_type>
-                            <sort_order>4</sort_order>
+                        <increment translate="label">
+                            <label>Counter increment</label>
+                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-not-negative-number</validate>
+                            <sort_order>105</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
-                        </global>
+                        </increment>
                     </fields>
                 </ordernumbers>
 
@@ -209,6 +243,49 @@
                     </fields>
                 </creditmemonumbers>
 
+                <replacements translate="label">
+                    <label>Variable Replacements</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <expanded>0</expanded>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<replacements translate="label">
+    						<label>Variable replacements</label>
+    						<frontend_model>opentools_ordernumber/replacements</frontend_model>
+    						<backend_model>adminhtml/system_config_backend_serialized</backend_model>
+    						<sort_order>2</sort_order>
+    						<show_in_default>1</show_in_default>
+    						<show_in_website>1</show_in_website>
+    						<show_in_store>1</show_in_store>
+						</replacements>
+                    </fields>
+                </replacements>
+
+                <counters translate="label">
+                    <label>Current Counter Values</label>
+                    <comment><![CDATA[All changes made to the counter values will be applied when you press save. Please be aware that in the meantime an order might have been created, so the counter might already be out of date!]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>200</sort_order>
+                    <expanded>0</expanded>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <counters translate="label">
+                            <label>Counter Values</label>
+    						<frontend_model>opentools_ordernumber/counters</frontend_model>
+    						<backend_model>opentools_ordernumber/backend_counters</backend_model>
+    						<sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+    						<can_be_empty>1</can_be_empty>
+                            </counters>
+                    </fields>
+                </counters>
             </groups>
         </ordernumber>
     </sections>

@@ -25,4 +25,16 @@ class OpenTools_Ordernumber_Model_Ordernumber extends Mage_Core_Model_Abstract
         $this->_hasDataChanges = false;
         return $this;
     }
+    public function getNumberTypes()
+    {
+        $helper = Mage::helper('ordernumber');
+        $types = array(
+                'order'      => $helper->__('Order number'),
+                'invoice'    => $helper->__('Invoice'),
+                'shipment'   => $helper->__('Shipment'),
+                'creditmemo' => $helper->__('Credit Memo'),
+        );
+        return $types;
+    }
+
 }
