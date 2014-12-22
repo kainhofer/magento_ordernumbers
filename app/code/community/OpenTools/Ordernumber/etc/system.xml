@@ -28,20 +28,20 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </active>
-                        <format translate="label">
+                        <format translate="label tooltip comment">
                             <label>Format of the order numbers</label>
-                            <tooltip><![CDATA[A string, where [...] indicates a variable and # is replaced with the counter. Possible (case-insensitive) variables are:<table><tr><td>[year], [year2], [month], [day], [hour], [hour12], [ampm], [minute], [second]</td><td>Components of the current date when the number is generated</td></tr><tr><td>[randomDigit<i>n</i>], [randomHex<i>n</i>], [randomHex<i>n</i>], [randomLetter<i>n</i>], [randomULetter<i>n</i>], [randomLLetter<i>n</i>], [randomAlphanum<i>n</i>]</td><td>Random numbers an strings of length <i>n</i> (n=1 if left out)</td></tr><tr><td>[StoreId]</td><td>Id of the current store</td></tr><tr><td>[OrderNumber], [OrderID]</td><td>Order number and ID (not available for ordernumbers)</td></tr><tr><td>[firstname],[lastname], [company], [city], [zip], [postcode], [region], [regioncode], [regionid], [country], [countrycode2], [countrycode3], [countryid]</td><td>Components of the shipping address</td></tr><tr><td>[shippingfirstname], ...<br/>[billingfirstname], ...</td><td>Components of the shipping and billing addresses (fields as above)</td></tr><tr><td>[totalitems], [totalquantity]</td><td>Total number of items and total quantity of the order</td></tr><tr><td>[shippingmethod]</td><td>Internal name of the shipping method</td></tr></table>]]></tooltip>
-                            <comment><![CDATA[For help, see <a href="http://open-tools.net/documentation/ordernumber-plugin-for-virtuemart.html">our homepage</a>.]]></comment>
                             <frontend_type>text</frontend_type>
+                            <tooltip>ORDERNUMBER_FORMAT_TOOLTIP</tooltip>
+                            <comment>ORDERNUMBER_FORMAT_COMMENT</comment>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </format>
-                        <scope translate="label">
+                        <scope translate="label tooltip comment">
                             <label>Scope of the counter</label>
-                            <tooltip>Separate counters can be used per store or per website. Alternatively, all counters can be used accoss all stores simultaneously.</tooltip>
+                            <tooltip>ORDERNUMBER_SCOPE_TOOLTIP</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>opentools_ordernumber/source_scope</source_model>
                             <sort_order>50</sort_order>
@@ -50,7 +50,7 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </scope>
-                        <reset translate="label">
+                        <reset translate="label tooltip comment">
                             <label>Counter "Reset"</label>
                             <tooltip></tooltip>
                             <frontend_type>select</frontend_type>
@@ -61,7 +61,7 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </reset>
-                        <counterresetformat translate="label">
+                        <counterresetformat translate="label tooltip comment">
                             <label>Format for counter names</label>
                             <comment>Whenever any variable in this format changes, a new counter is used.</comment>
                             <frontend_type>text</frontend_type>
@@ -71,7 +71,7 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active><reset>-1</reset></depends>
                         </counterresetformat>
-                        <digits translate="label">
+                        <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
                             <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
                             <frontend_type>text</frontend_type>
@@ -82,7 +82,7 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </digits>
-                        <increment translate="label">
+                        <increment translate="label tooltip comment">
                             <label>Counter increment</label>
                             <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
                             <frontend_type>text</frontend_type>
@@ -96,7 +96,7 @@
                     </fields>
                 </ordernumbers>
 
-                <invoicenumbers translate="label">
+                <invoicenumbers translate="label tooltip comment">
                     <label>Invoice Numbers</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>20</sort_order>
@@ -105,7 +105,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <active translate="label">
+                        <active translate="label tooltip comment">
                             <label>Customize invoice numbers</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -114,8 +114,10 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </active>
-                        <format translate="label">
+                        <format translate="label tooltip comment">
                             <label>Format of the invoice numbers</label>
+                            <tooltip>ORDERNUMBER_FORMAT_TOOLTIP</tooltip>
+                            <comment>ORDERNUMBER_FORMAT_COMMENT</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
@@ -123,29 +125,64 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </format>
-                        <digits translate="label">
+                        <scope translate="label tooltip comment">
+                            <label>Scope of the counter</label>
+                            <tooltip>ORDERNUMBER_SCOPE_TOOLTIP</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_scope</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </scope>
+                        <reset translate="label tooltip comment">
+                            <label>Counter "Reset"</label>
+                            <tooltip></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_reset</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </reset>
+                        <counterresetformat translate="label tooltip comment">
+                            <label>Format for counter names</label>
+                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active><reset>-1</reset></depends>
+                        </counterresetformat>
+                        <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
+                            <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
-                            <sort_order>3</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </digits>
-                        <global translate="label">
-                            <label>Use a global counter with no reset</label>
-                            <frontend_type>checkbox</frontend_type>
-                            <sort_order>4</sort_order>
+                        <increment translate="label tooltip comment">
+                            <label>Counter increment</label>
+                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-not-negative-number</validate>
+                            <sort_order>105</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
-                        </global>
+                        </increment>
                     </fields>
                 </invoicenumbers>
 
-                <shipmentnumbers translate="label">
+                <shipmentnumbers translate="label tooltip comment">
                     <label>Shipment Numbers</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>30</sort_order>
@@ -154,7 +191,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <active translate="label">
+                        <active translate="label tooltip comment">
                             <label>Customize shipment numbers</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -163,8 +200,10 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </active>
-                        <format translate="label">
+                        <format translate="label tooltip comment">
                             <label>Format of the shipment numbers</label>
+                            <tooltip>ORDERNUMBER_FORMAT_TOOLTIP</tooltip>
+                            <comment>ORDERNUMBER_FORMAT_COMMENT</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
@@ -172,29 +211,64 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </format>
-                        <digits translate="label">
+                        <scope translate="label tooltip comment">
+                            <label>Scope of the counter</label>
+                            <tooltip>ORDERNUMBER_SCOPE_TOOLTIP</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_scope</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </scope>
+                        <reset translate="label tooltip comment">
+                            <label>Counter "Reset"</label>
+                            <tooltip></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_reset</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </reset>
+                        <counterresetformat translate="label tooltip comment">
+                            <label>Format for counter names</label>
+                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active><reset>-1</reset></depends>
+                        </counterresetformat>
+                        <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
+                            <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
-                            <sort_order>3</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </digits>
-                        <global translate="label">
-                            <label>Use a global counter with no reset</label>
-                            <frontend_type>checkbox</frontend_type>
-                            <sort_order>4</sort_order>
+                        <increment translate="label tooltip comment">
+                            <label>Counter increment</label>
+                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-not-negative-number</validate>
+                            <sort_order>105</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
-                        </global>
+                        </increment>
                     </fields>
                 </shipmentnumbers>
 
-                <creditmemonumbers translate="label">
+                <creditmemonumbers translate="label tooltip comment">
                     <label>Credit Memo Numbers</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>40</sort_order>
@@ -203,7 +277,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <active translate="label">
+                        <active translate="label tooltip comment">
                             <label>Customize credit memo numbers</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -212,7 +286,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </active>
-                        <format translate="label">
+                        <format translate="label tooltip comment">
                             <label>Format of the credit memo numbers</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>2</sort_order>
@@ -221,29 +295,64 @@
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </format>
-                        <digits translate="label">
+                        <scope translate="label tooltip comment">
+                            <label>Scope of the counter</label>
+                            <tooltip>ORDERNUMBER_SCOPE_TOOLTIP</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_scope</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </scope>
+                        <reset translate="label tooltip comment">
+                            <label>Counter "Reset"</label>
+                            <tooltip></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>opentools_ordernumber/source_reset</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active></depends>
+                        </reset>
+                        <counterresetformat translate="label tooltip comment">
+                            <label>Format for counter names</label>
+                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><active>1</active><reset>-1</reset></depends>
+                        </counterresetformat>
+                        <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
+                            <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
-                            <sort_order>3</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
                         </digits>
-                        <global translate="label">
-                            <label>Use a global counter with no reset</label>
-                            <frontend_type>checkbox</frontend_type>
-                            <sort_order>4</sort_order>
+                        <increment translate="label tooltip comment">
+                            <label>Counter increment</label>
+                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-not-negative-number</validate>
+                            <sort_order>105</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><active>1</active></depends>
-                        </global>
+                        </increment>
                     </fields>
                 </creditmemonumbers>
 
-                <replacements translate="label">
+                <replacements translate="label tooltip comment">
                     <label>Variable Replacements</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>100</sort_order>
@@ -252,8 +361,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-						<replacements translate="label">
-    						<label>Variable replacements</label>
+						<replacements translate="label tooltip comment">
     						<frontend_model>opentools_ordernumber/replacements</frontend_model>
     						<backend_model>adminhtml/system_config_backend_serialized</backend_model>
     						<sort_order>2</sort_order>
@@ -264,9 +372,9 @@
                     </fields>
                 </replacements>
 
-                <counters translate="label">
+                <counters translate="label tooltip comment">
                     <label>Current Counter Values</label>
-                    <comment><![CDATA[All changes made to the counter values will be applied when you press save. Please be aware that in the meantime an order might have been created, so the counter might already be out of date!]]></comment>
+                    <comment>ORDERNUMBER_COUNTERTABLE_WARNING</comment>
                     <frontend_type>text</frontend_type>
                     <sort_order>200</sort_order>
                     <expanded>0</expanded>
@@ -274,8 +382,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <counters translate="label">
-                            <label>Counter Values</label>
+                        <counters translate="label tooltip comment">
     						<frontend_model>opentools_ordernumber/counters</frontend_model>
     						<backend_model>opentools_ordernumber/backend_counters</backend_model>
     						<sort_order>1</sort_order>

@@ -40,11 +40,11 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 	{
 		$this->setElement($element);
 
-$this->logitem("adminhtml/system_store: ", Mage::getSingleton('adminhtml/system_store'));
-$this->logitem("adminhtml/system_store store values for form: ", Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(true, true));
-$this->logitem("adminhtml/system_store website values for form: ", Mage::getSingleton('adminhtml/system_store')->getWebsiteValuesForForm(true, true));
-$this->logitem("adminhtml/system_store stores structure: ", Mage::getSingleton('adminhtml/system_store')->getStoresStructure(true));
-$html = '';
+// $this->logitem("adminhtml/system_store: ", Mage::getSingleton('adminhtml/system_store'));
+// $this->logitem("adminhtml/system_store store values for form: ", Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(true, true));
+// $this->logitem("adminhtml/system_store website values for form: ", Mage::getSingleton('adminhtml/system_store')->getWebsiteValuesForForm(true, true));
+// $this->logitem("adminhtml/system_store stores structure: ", Mage::getSingleton('adminhtml/system_store')->getStoresStructure(true));
+        $html = '';
 		$html .= '<table id="ordernumber_counters_template_table" style="display:none">';
 		$html .= $this->_getRowHtmlNew();
 		$html .= '</table>';
