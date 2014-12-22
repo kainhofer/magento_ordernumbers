@@ -47,7 +47,7 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 		$html .= '<th>New Variable</th>';
 		$html .= '<th>New Value</th>';
 		$html .= '<th>' . $this->_getAddRowButtonHtml('ordernumber_replacements_table',
-				'ordernumber_replacements_template_table', $this->__('Add New Replacement')) . '</th>';
+				'ordernumber_replacements_template_table', 'Add New Replacement') . '</th>';
 		$html .= '</tr>';
 		return $html;
 	}

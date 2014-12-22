@@ -69,12 +69,12 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 	protected function _getRowHeader()
 	{
 		$html  = '<tr class="headings">';
-		$html .= '<th>Counter Type</th>';
-		$html .= '<th>Scope</th>';
-		$html .= '<th>Counter Name</th>';
-		$html .= '<th>Counter</th>';
+		$html .= '<th>'. $this->__('Counter Type') . '</th>';
+		$html .= '<th>'. $this->__('Scope') . '</th>';
+		$html .= '<th>'. $this->__('Counter Name') . '</th>';
+		$html .= '<th>'. $this->__('Counter') . '</th>';
 		$html .= '<th>' . $this->_getAddRowButtonHtml('ordernumber_counters_table',
-				'ordernumber_counters_template_table', $this->__('Add New Counter')) . '</th>';
+				'ordernumber_counters_template_table', 'Add New Counter') . '</th>';
 		$html .= '</tr>';
 		return $html;
 	}

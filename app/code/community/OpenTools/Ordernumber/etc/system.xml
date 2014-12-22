@@ -63,7 +63,7 @@
                         </reset>
                         <counterresetformat translate="label tooltip comment">
                             <label>Format for counter names</label>
-                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <comment>ORDERNUMBER_RESETFORMAT_COMMENT</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
@@ -73,7 +73,7 @@
                         </counterresetformat>
                         <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
-                            <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
+                            <tooltip>ORDERNUMBER_DIGITS_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>100</sort_order>
@@ -84,7 +84,7 @@
                         </digits>
                         <increment translate="label tooltip comment">
                             <label>Counter increment</label>
-                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <tooltip>ORDERNUMBER_INCREMENT_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>105</sort_order>
@@ -149,7 +149,7 @@
                         </reset>
                         <counterresetformat translate="label tooltip comment">
                             <label>Format for counter names</label>
-                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <comment>ORDERNUMBER_RESETFORMAT_COMMENT</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
@@ -159,7 +159,7 @@
                         </counterresetformat>
                         <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
-                            <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
+                            <tooltip>ORDERNUMBER_DIGITS_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>100</sort_order>
@@ -170,7 +170,7 @@
                         </digits>
                         <increment translate="label tooltip comment">
                             <label>Counter increment</label>
-                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <tooltip>ORDERNUMBER_INCREMENT_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>105</sort_order>
@@ -235,7 +235,7 @@
                         </reset>
                         <counterresetformat translate="label tooltip comment">
                             <label>Format for counter names</label>
-                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <comment>ORDERNUMBER_RESETFORMAT_COMMENT</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
@@ -245,7 +245,7 @@
                         </counterresetformat>
                         <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
-                            <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
+                            <tooltip>ORDERNUMBER_DIGITS_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>100</sort_order>
@@ -256,7 +256,7 @@
                         </digits>
                         <increment translate="label tooltip comment">
                             <label>Counter increment</label>
-                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <tooltip>ORDERNUMBER_INCREMENT_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>105</sort_order>
@@ -319,7 +319,7 @@
                         </reset>
                         <counterresetformat translate="label tooltip comment">
                             <label>Format for counter names</label>
-                            <comment>Whenever any variable in this format changes, a new counter is used.</comment>
+                            <comment>ORDERNUMBER_RESETFORMAT_COMMENT</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>61</sort_order>
                             <show_in_default>1</show_in_default>
@@ -329,7 +329,7 @@
                         </counterresetformat>
                         <digits translate="label tooltip comment">
                             <label>Number of digits for the counter</label>
-                            <tooltip>A # will be replaced by the counter, left-padded with 0s to have at least this many digits</tooltip>
+                            <tooltip>ORDERNUMBER_DIGITS_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>100</sort_order>
@@ -340,7 +340,7 @@
                         </digits>
                         <increment translate="label tooltip comment">
                             <label>Counter increment</label>
-                            <tooltip>Increment for the counter so that your competitors cannot directly estimate your business figures.</tooltip>
+                            <tooltip>ORDERNUMBER_INCREMENT_TOOLTIP</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>validate-not-negative-number</validate>
                             <sort_order>105</sort_order>
