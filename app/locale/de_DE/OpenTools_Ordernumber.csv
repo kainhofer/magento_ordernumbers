@@ -1,4 +1,6 @@
-﻿
+﻿# Translation file for the OpenTools Ordernumber Module for Magento
+# (C) 2014-2015 Reinhold Kainhofer, Open Tools
+#     office@open-tools.net, http://www.open-tools.net/
 "Add New Counter", "Neuer Zähler"
 "Add New Replacement", "Neue Ersetzung"
 "Counter ""Reset""", "Zähler ""zurücksetzen"""
@@ -46,6 +48,7 @@
 "Order Number", "Auftragsnummer"
 "Order Numbers", "Auftragsnummern"
 "Order number", "Auftragsnummer"
+"Restore", "Wiederherstellen"
 "Scope of the counter", "Gültigkeitsbereich des Zählers"
 "Separate counter for each Format Value", "Eigener Zähler für jeden Format-Wert"
 "Separate counters for each Store View", "Eigene Zähler für jeden Shop-View"

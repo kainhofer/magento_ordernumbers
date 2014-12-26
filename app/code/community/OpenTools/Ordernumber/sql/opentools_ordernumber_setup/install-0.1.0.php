@@ -26,7 +26,7 @@ $table = $installer->getConnection()
     ->addColumn('count',        Varien_Db_Ddl_Table::TYPE_INTEGER, null, array('unsigned'=>true,'nullable'=>false), 'Counter')
     ->addIndex($installer->getIdxName(
             $installer->getTable('opentools_ordernumber/ordernumber'),
-            array('number_type', 'number_format'),
+            array('number_type', 'website_id', 'group_id', 'store_id', 'number_format'),
             Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
         ),
         array('number_type', 'number_format'),

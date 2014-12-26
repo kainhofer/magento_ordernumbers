@@ -27,21 +27,21 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
          parent::_construct();
          $this->_init('ordernumber/ordernumber');
      }
- 
+
     protected $_dbModel = null;
     protected function _getModel() {
         return Mage::getModel('opentools_ordernumber/ordernumber');
     }
-    
+
     public function getModel() {
-        if (is_null($this->_dbModel)) 
+        if (is_null($this->_dbModel))
             $this->_dbModel = $this->_getModel();
         return $this->_dbModel;
     }
 
     // This trigger is called directly after the increment ID is reserved for an order
     // TODO: Ideally, we would overwrite the reserveOrderId function!
-    //       Then magento would not create/reserve an order in the first place
+    //       Then magento would not create/reserve an order number in the first place
     public function sales_model_service_quote_submit_before ($observer) {
         $order = $observer->getEvent()->getOrder();
         return $this->handle_new_number('order', $order, $order);
@@ -67,7 +67,8 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     public function handle_new_number ($nrtype, $object, $order) {
-        $storeId = $order->getStore()->getStoreId();
+        $store = $order->getStore();
+        $storeId = $store->getStoreId();
         $cfgprefix = 'ordernumber/'.$nrtype.'numbers';
         $enabled = Mage::getStoreConfig($cfgprefix.'/active', $storeId);
 
@@ -76,34 +77,59 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
             $object->setOrdernumberProcessed(true);
 
             $format = Mage::getStoreConfig($cfgprefix.'/format', $storeId);
-            $global = Mage::getStoreConfig($cfgprefix.'/global', $storeId);
+            $scope = Mage::getStoreConfig($cfgprefix.'/scope', $storeId);
+            $reset = Mage::getStoreConfig($cfgprefix.'/reset', $storeId);
+            $counterfmt = Mage::getStoreConfig($cfgprefix.'/resetformat', $storeId);
             $digits = Mage::getStoreConfig($cfgprefix.'/digits', $storeId);
+            $increment = Mage::getStoreConfig($cfgprefix.'/increment', $storeId);
 
             // First, replace all variables:
             $helper = Mage::helper('ordernumber');
             $info = array('order'=>$order, $nrtype=>$object);
-            $nr = $helper->replace_fields ($format, $nrtype, $info);
 
+//             TODO: foreach ($customvars)
+
+            // The ordernumber/XXXnumbers/reset contains some pre-defined counter names as
+            // well as enum values indicating certain behavior. Replace those by the actual
+            // counter names for the current counter:
+            switch ($reset) {
+                case 0:  $format = $format . '|'; break;
+                case 1:  $format = $format . '|' . $format; break;
+                case -1: $format = $foramt . '|' . $counterfmt; break;
+                default: /* Pre-defined counter formats saved in the /reset config field */
+                    $counterfmt = $format . '|' . $reset; break;
+            }
+            // Now apply the replacements
+            $nr = $helper->replace_fields ($format, $nrtype, $info);
+            $customvars = Mage::getStoreConfig('ordernumber/replacements', $storeId);
+            if (isset($customvars['replacements']))
+                $customvars = $customvars['replacements'];
+            if ($customvars)
+                $customvars = unserialize($customvars);
+Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
             // Split at a | to get the number format and a possibly different counter increment format
             // If a separate counter format is given after the |, use it, otherwise reuse the number format itself as counter format
             $parts = explode ("|", $nr);
             $format = $parts[0];
-            $counterfmt = ($global==1)?"":$parts[(count($parts)>1)?1:0];
-            
-            // Now find the next counter that does not lead to duplicate 
+            $counterfmt = $parts[(count($parts)>1)?1:0];
+
+            // Now find the next counter that does not lead to duplicate
             $newnumber = null;
             $model = $this->getModel();
-            
+
             $count = 0;
             $created = false;
             // Make up to 150 attempts to create a number...
-            while (empty($newnumber) && (count<150)) { 
+            while (empty($newnumber) && (count<150)) {
                 $count += 1;
 
                 // Find the next counter value
-                $count = $model->getCounterValueIncremented($nrtype, $counterfmt);
+                $website_id = ($scope>=1)?$store->getWebsiteId():0;
+                $group_id = ($scope>=2)?$store->getGroupId():0;
+                $store_id = ($scope>=3)?$store->getStoreId():0;
+                $count = $model->getCounterValueIncremented($nrtype, $counterfmt, $increment, $website_id, $group_id, $store_id);
                 $newnumber = str_replace ("#", sprintf('%0' . (int)$digits . 's', $count), $format);
-                
+
                 // Check whether that number is already in use. If so, attempt to create the next number:
                 $modelname=($nrtype=='order') ? 'sales/order' : ('sales/order_'.$nrtype);
                 $collection = Mage::getModel($modelname)->getCollection()->addFieldToFilter('increment_id', $newnumber);

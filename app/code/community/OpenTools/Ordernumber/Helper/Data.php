@@ -33,7 +33,7 @@ function logitem($label, $item) {
         }
         return self::randomString ($alphabet, $len);
     }
-    
+
     function setupDateTimeReplacements (&$reps, $nrtype) {
         $reps["[year]"] = date ("Y");
         $reps["[year2]"] = date ("y");
@@ -48,7 +48,7 @@ function logitem($label, $item) {
     function setupAddressReplacements(&$reps, $prefix, $address, $nrtype) {
         if (!$address) return;
         $reps["[".$prefix."addressid]"] = $address->getId();
-        
+
         $reps["[".$prefix."firstname]"] = $address->firstname;
         $reps["[".$prefix."lastname]"] = $address->lastname;
         $reps["[".$prefix."company]"] = $address->company;
@@ -65,7 +65,7 @@ function logitem($label, $item) {
         $reps["[".$prefix."countrycode2]"] = $country->iso2_code;
         $reps["[".$prefix."countrycode3]"] = $country->iso3_code;
         $reps["[".$prefix."countryid]"] = $country->getId();
-        
+
     }
     function setupStoreReplacements (&$reps, $order, $nrtype) {
         $store = $order->getStore();
@@ -88,14 +88,14 @@ function logitem($label, $item) {
         $this->setupAddressReplacements($reps, "", $address, $nrtype);
         $this->setupAddressReplacements($reps, "shipping", $shippingAddress, $nrtype);
         $this->setupAddressReplacements($reps, "billing", $billingAddress, $nrtype);
-        
+
         $reps["[totalitems]"] = $order->total_item_count;
         $reps["[totalquantity]"] = $order->total_qty_ordered;
     }
     function setupShippingReplacements(&$reps, $order, $nrtype) {
         $reps["[shippingmethod]"] = $order->getShippingMethod();
     }
-    
+
     function setupShipmentReplacements (&$reps, $shipment, $order, $nrtype) {
         // TODO
     }
@@ -121,16 +121,17 @@ function logitem($label, $item) {
         if (isset($info['creditmemo'])) {
             $this->setupCreditMemoReplacements($reps, $info['creditmemo'], $order, $nrtype);
         }
+Mage::Log('Replacements at end of setupReplacements(nrtype='.$nrtype.'): '.print_r($reps,1), null, 'ordernumber.log');
+
         return $reps;
     }
-    
+
     function doReplacements ($fmt, $reps) {
         // First, replace all randomXXX[n] fields. This needs to be done with a regexp and a callback:
         $fmt = preg_replace_callback ('/\[(random)(.*?)([0-9]*?)\]/', array($this, 'replaceRandom'), $fmt);
         return str_ireplace (array_keys($reps), array_values($reps), $fmt);
     }
-    
-    /* Type 0 means order number, type 1 means invoice number, type 2 means customer number, 3 means order password */
+
     function replace_fields ($fmt, $nrtype, $info) {
         $reps = $this->setupReplacements ($nrtype, $info);
         return $this->doReplacements($fmt, $reps);

@@ -1,3 +1,6 @@
+﻿# Translation file for the OpenTools Ordernumber Module for Magento
+# (C) 2014-2015 Reinhold Kainhofer, Open Tools
+#     office@open-tools.net, http://www.open-tools.net/
 "ORDERNUMBER_COUNTERTABLE_WARNING", "All changes made to the counter values will be applied when you press save. Please be aware that in the meantime an order might have been created, so the counter might already be out of date!"
 "ORDERNUMBER_FORMAT_COMMENT","For help, see <a href='http://open-tools.net/documentation/ordernumber-plugin-for-virtuemart.html'>our homepage</a>."
 "ORDERNUMBER_FORMAT_TOOLTIP","A string, where [...] indicates a variable and # is replaced with the counter. Possible (case-insensitive) variables are:<table>

@@ -137,32 +137,37 @@
 
     <default>
         <ordernumber>
-            <settings>
-                <active>0</active>
-            </settings>
             <ordernumbers>
                 <active>0</active>
                 <format>Order-[year]-#</format>
+                <scope>0</scope>
+                <reset>1</reset>
                 <digits>0</digits>
-                <global>0</global>
+                <increment>1</increment>
             </ordernumbers>
             <invoicenumbers>
                 <active>0</active>
-                <format>Invoice-[year]-#</format>
+                <format>INV-[year]-#</format>
+                <scope>0</scope>
+                <reset>1</reset>
                 <digits>0</digits>
-                <global>0</global>
+                <increment>1</increment>
             </invoicenumbers>
             <shipmentnumbers>
                 <active>0</active>
-                <format>Shipment-[year]-#</format>
+                <format>SH-[year]-#</format>
+                <scope>0</scope>
+                <reset>1</reset>
                 <digits>0</digits>
-                <global>0</global>
+                <increment>1</increment>
             </shipmentnumbers>
             <creditmemonumbers>
                 <active>0</active>
-                <format>CreditMemo-[year]-#</format>
+                <format>CM-[year]-#</format>
+                <scope>0</scope>
+                <reset>1</reset>
                 <digits>0</digits>
-                <global>0</global>
+                <increment>1</increment>
             </creditmemonumbers>
         </ordernumber>
     </default>
