@@ -121,8 +121,65 @@ function logitem($label, $item) {
         if (isset($info['creditmemo'])) {
             $this->setupCreditMemoReplacements($reps, $info['creditmemo'], $order, $nrtype);
         }
-Mage::Log('Replacements at end of setupReplacements(nrtype='.$nrtype.'): '.print_r($reps,1), null, 'ordernumber.log');
+// Mage::Log('Replacements at end of setupReplacements(nrtype='.$nrtype.'): '.print_r($reps,1), null, 'ordernumber.log');
 
+        return $reps;
+    }
+
+    function applyCustomVariables ($nrtype, $info, $reps, $customvars) {
+        static $listvars = array("groups", "skus");
+// Mage::getSingleton('core/session')->addWarning('<pre>custom variables, conditionvar='.$conditionvar.', reps='.print_r($reps,1).', customvars='.print_r($customvars,1).'</pre>');
+        $order = $info['order'];
+        $customer = $order->getCustomer();
+        $address = $order->getShippingAddress();
+        $store = $order->getStore();
+// $this->logitem("Order: ", $order);
+        foreach ($customvars as $c) {
+            $conditionvar = $c['conditionvar'];
+
+            $found = false;
+            $compareval = null;
+
+            if (!$found && isset($reps[$conditionvar])) {
+                $found = true;
+                $compareval = $reps[$conditionvar];
+            } elseif (isset($reps['['.$conditionvar.']'])) {
+                $found = true;
+                $compareval = $reps['['.$conditionvar.']'];
+            } elseif (in_array($conditionvar, $listvars)) {
+                // TODO: Handle lists
+                $found = true;
+                $compareval = null /* TODO */;
+            } elseif ($compareval = $order->getData($conditionvar)) {
+                // TODO: Handle order property
+                $found = true;
+            } elseif ($compareval = $customer->getData($conditionvar)) {
+                // TODO: Handle customer property
+                $found = true;
+            } elseif ($compareval = $address->getData($conditionvar)) {
+                // TODO: Handle address property
+                $found = true;
+            } elseif ($compareval = $store->getData($conditionvar)) {
+                // TODO: Handle store property
+                $found = true;
+            } else {
+                // TODO: Handly other possible properties!
+                // TODO: Print out warning that variable could not be found.
+                Mage::getSingleton('core/session')->addWarning($this->__('Unable to find variable "%s" used in the ordernumber custom variable definitions.', $conditionvar));
+            }
+            if ($found) {
+                if (is_array($compareval)) {
+                    $match = in_array($c['conditionval'], $compareval);
+                } else {
+                    $match = ($c['conditionval'] == $compareval);
+                }
+            }
+            if ($found && $match) {
+                $varname = '['.strtolower($c['newvar']).']';
+                $reps[$varname] = $c['newval'];
+            }
+// $this->logitem("Reps after $conditionvar: ", $order);
+        }
         return $reps;
     }
 
@@ -132,8 +189,10 @@ Mage::Log('Replacements at end of setupReplacements(nrtype='.$nrtype.'): '.print
         return str_ireplace (array_keys($reps), array_values($reps), $fmt);
     }
 
-    function replace_fields ($fmt, $nrtype, $info) {
+    function replace_fields ($fmt, $nrtype, $info, $customvars) {
         $reps = $this->setupReplacements ($nrtype, $info);
+        $reps = $this->applyCustomVariables ($nrtype, $info, $reps, $customvars);
+// $this->logitem("All replacements after custom variables: ", $reps);
         return $this->doReplacements($fmt, $reps);
     }
 

@@ -99,14 +99,16 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
                 default: /* Pre-defined counter formats saved in the /reset config field */
                     $counterfmt = $format . '|' . $reset; break;
             }
-            // Now apply the replacements
-            $nr = $helper->replace_fields ($format, $nrtype, $info);
             $customvars = Mage::getStoreConfig('ordernumber/replacements', $storeId);
             if (isset($customvars['replacements']))
                 $customvars = $customvars['replacements'];
             if ($customvars)
                 $customvars = unserialize($customvars);
 Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
+
+            // Now apply the replacements
+            $nr = $helper->replace_fields ($format, $nrtype, $info, $customvars);
+
             // Split at a | to get the number format and a possibly different counter increment format
             // If a separate counter format is given after the |, use it, otherwise reuse the number format itself as counter format
             $parts = explode ("|", $nr);

@@ -364,7 +364,7 @@
                     <fields>
 						<replacements translate="label tooltip comment">
     						<frontend_model>opentools_ordernumber/replacements</frontend_model>
-    						<backend_model>adminhtml/system_config_backend_serialized</backend_model>
+    						<backend_model>opentools_ordernumber/backend_replacements</backend_model>
     						<sort_order>2</sort_order>
     						<show_in_default>1</show_in_default>
     						<show_in_website>1</show_in_website>

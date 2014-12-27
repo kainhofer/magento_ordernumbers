@@ -4,11 +4,11 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 	protected $_addRowButtonHtml = array();
 	protected $_deleteRowButtonHtml = array();
 
-// 	function logitem($label, $item) {
-// 		Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
-// 		Mage::Log(is_array($item)?$item:$item->debug(), null, 'ordernumber.log');
-// 		Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');
-// 	}
+	function logitem($label, $item) {
+		Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
+		Mage::Log(is_array($item)?$item:$item->debug(), null, 'ordernumber.log');
+		Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');
+	}
 
 	/**
 	 * Returns html part of the setting.
@@ -29,9 +29,9 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 		$html .= $this->_getRowHeader();
 
 // $this->logitem("render element: ", $element);
-		if ($this->_getValue('conditionvar')) {
-		    foreach ($this->_getValue('conditionvar') as $i => $var) {
-                $html .= $this->_getRowHtml($i);
+		if ($this->_getValue('')) {
+		    foreach ($this->_getValue('') as $i => $values) {
+                $html .= $this->_getRowHtml($i, $values);
 		    }
 		} else {
 		    $html .= $this->_getEmptyRowHtml();
@@ -161,16 +161,17 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 	 * @param int $rowIndex
 	 * @return string
 	 */
-	protected function _getRowHtml($rowIndex = -1)
+	protected function _getRowHtml($rowIndex = -1, $values = array())
 	{
 	    static $class = 'odd';
+	    $disabled = $this->_getDisabled($rowIndex == -1);
 		$html  = '<tr class="'.$class.'">';
 		$class = ($class=='odd')?'even':'odd';
-		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[conditionvar][]" value="' . $this->_getValue('conditionvar/' . $rowIndex) . '" ' . $this->_getDisabled($rowIndex == -1) . '/></td>';
-		$html .= '<td class="oton-replacement-value"   ><input name="' . $this->getElement()->getName() . '[conditionval][]" value="' . $this->_getValue('conditionval/' . $rowIndex) . '" ' . $this->_getDisabled($rowIndex == -1) . '/></td>';
+		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[conditionvar][]" value="' . $values['conditionvar'] . '" ' . $disabled . '/></td>';
+		$html .= '<td class="oton-replacement-value"   ><input name="' . $this->getElement()->getName() . '[conditionval][]" value="' . $values['conditionval'] . '" ' . $disabled . '/></td>';
 		$html .= '<td>=></td>';
-		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[newvar][]"       value="' . $this->_getValue('newvar/' . $rowIndex) .       '" ' . $this->_getDisabled($rowIndex == -1) . '/></td>';
-		$html .= '<td class="oton-replacement-newvalue"><input name="' . $this->getElement()->getName() . '[newval][]"       value="' . $this->_getValue('newval/' . $rowIndex) .       '" ' . $this->_getDisabled($rowIndex == -1) . '/></td>';
+		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[newvar][]"       value="' . $values['newvar'] .       '" ' . $disabled . '/></td>';
+		$html .= '<td class="oton-replacement-newvalue"><input name="' . $this->getElement()->getName() . '[newval][]"       value="' . $values['newval'] .       '" ' . $disabled . '/></td>';
 		$html .= '<td>' . $this->_getDeleteRowButtonHtml() . '</td>';
 		$html .= '</tr>';
 
@@ -195,13 +196,9 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 
 	protected function _getValue($key)
 	{
-		return $this->getElement()->getData('value/' . $key);
+		return $this->getElement()->getData(empty($key)?'value':('value/' . $key));
 	}
 
-	protected function _getSelected($key, $value)
-	{
-		return $this->getElement()->getData('value/' . $key) == $value ? 'selected="selected"' : '';
-	}
 
 	protected function _getJSAddRow($container, $template) {
 	    $js  = "
