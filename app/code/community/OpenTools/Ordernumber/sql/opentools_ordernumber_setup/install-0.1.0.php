@@ -19,17 +19,15 @@ $table = $installer->getConnection()
         'primary'  => true,
     ), 'Ordernumber id')
     ->addColumn('number_type',  Varien_Db_Ddl_Table::TYPE_TEXT,      63, array('nullable'=> false),                 'Number Type')
-    ->addColumn('website_id',   Varien_Db_Ddl_Table::TYPE_SMALLINT,null, array('nullable'=> false, 'default'=>-1),  'Website ID')
-    ->addColumn('group_id',     Varien_Db_Ddl_Table::TYPE_SMALLINT,null, array('nullable'=> false, 'default'=>-1),  'Group ID')
-    ->addColumn('store_id',     Varien_Db_Ddl_Table::TYPE_SMALLINT,null, array('nullable'=> false, 'default'=>-1),  'Store ID')
+    ->addColumn('number_scope', Varien_Db_Ddl_Table::TYPE_TEXT,      20, array('nullable'=> false, 'default'=>''),  'Number Scope')
     ->addColumn('number_format',Varien_Db_Ddl_Table::TYPE_TEXT,     255, array('nullable'=> true),                  'Number Format')
     ->addColumn('count',        Varien_Db_Ddl_Table::TYPE_INTEGER, null, array('unsigned'=>true,'nullable'=>false), 'Counter')
     ->addIndex($installer->getIdxName(
             $installer->getTable('opentools_ordernumber/ordernumber'),
-            array('number_type', 'website_id', 'group_id', 'store_id', 'number_format'),
+            array('number_type', 'number_scope', 'number_format'),
             Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
         ),
-        array('number_type', 'number_format'),
+        array('number_type', 'number_scope', 'number_format'),
         array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE)
     )
     ->setComment('Ordernumber Counter Table');

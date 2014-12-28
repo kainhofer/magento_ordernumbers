@@ -126,10 +126,11 @@ Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
                 $count += 1;
 
                 // Find the next counter value
-                $website_id = ($scope>=1)?$store->getWebsiteId():0;
-                $group_id = ($scope>=2)?$store->getGroupId():0;
-                $store_id = ($scope>=3)?$store->getStoreId():0;
-                $count = $model->getCounterValueIncremented($nrtype, $counterfmt, $increment, $website_id, $group_id, $store_id);
+                $scope_id = '';
+                if ($scope>=1) $scope_id = $store->getWebsiteId();
+                if ($scope>=2) $scope_id .= '/' . $store->getGroupId();
+                if ($scope>=3) $scope_id .= '/' . $store->getStoreId();
+                $count = $model->getCounterValueIncremented($nrtype, $counterfmt, $increment, $scope_id);
                 $newnumber = str_replace ("#", sprintf('%0' . (int)$digits . 's', $count), $format);
 
                 // Check whether that number is already in use. If so, attempt to create the next number:

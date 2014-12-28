@@ -137,7 +137,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 	    $websites = $sstore->getWebsiteCollection();
 	    foreach ($websites as $website) {
 	        $websiteId = $website->getId();
-	        $siteStr = 'w'.(int)$websiteId;
+	        $siteStr = (int)$websiteId;
 	        if ($websiteIds && !in_array($websiteId, $websiteIds)) {
 	            continue;
 	        }
@@ -153,7 +153,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 
 	        foreach ($website->getGroups() as $group) {
 	            $groupId = $group->getId();
-	            $groupStr = $siteStr . 'g' . (int)$groupId;
+	            $groupStr = $siteStr . '/' . (int)$groupId;
 
 	            if ($groupIds && !in_array($groupId, $groupIds)) {
 	                continue;
@@ -168,7 +168,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 	            foreach ($group->getStores() as $store) {
 
 	                $storeId = $store->getId();
-	                $storeStr = $groupStr . 's' . (int)$storeId;
+	                $storeStr = $groupStr . '/' . (int)$storeId;
 	                if ($storeIds && !in_array($storeId, $storeIds)) {
 	                    continue;
 	                }
@@ -201,26 +201,33 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 	    return $html;
 	}
 
-	protected function _convertScopeToString($website_id, $group_id, $store_id)
+	/** Convert the scope id ('' for global, websiteID/groupID/storeID)
+	 *  to a human-readable string
+	 *
+	 * @param $scope_ids scope id ('' for global, websiteID/groupID/storeID)
+	 * @return string
+	 */
+	protected function _convertScopeToString($scope_ids)
 	{
 	    $sstore = Mage::getSingleton('adminhtml/system_store');
 		$nonEscapableNbspChar = html_entity_decode('&#160;', ENT_NOQUOTES, 'UTF-8');
+		$ids = explode ('/', $scope_ids);
 
 	    $scopes = array();
-	    if ($website_id<=0) {
+	    if (empty($ids) || empty($ids[0])) {
 	        $scopes[] = $this->__('Global');
 	    } else {
-	        $website = Mage::getModel('core/website')->load($website_id);
+	        $website = Mage::getModel('core/website')->load($ids[0]);
 	        if ($website)
     	        $scopes[] = $this->__('Website: %s', $website->getName());
 	    }
-	    if ($group_id>0) {
-	        $group = Mage::getModel('core/store_group')->load($group_id);
+	    if (count($ids)>1) {
+	        $group = Mage::getModel('core/store_group')->load($ids[1]);
 	        if ($group)
     	        $scopes[] = str_repeat($nonEscapableNbspChar, 4) . $this->__('Store: %s', $group->getName());
 	    }
-	    if ($store_id>0) {
-	        $store = Mage::getModel('core/store')->load($store_id);
+	    if (count($ids)>2) {
+	        $store = Mage::getModel('core/store')->load($ids[2]);
 	        if ($store)
     	        $scopes[] = str_repeat($nonEscapableNbspChar, 8) . $this->__('View: %s', $store->getName());
 	    }
@@ -241,7 +248,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 		$class = ($class=='odd')?'even':'odd';
 		$types = $this->getNumberTypes();
 		$html .= '<td class="ordernumber_type">'.$types[$counter->getNumberType()].'</td>';
-		$html .= '<td class="ordernumber_scope">' . $this->_convertScopeToString($counter->getWebsiteId(), $counter->getGroupId(), $counter->getStoreId()) . '</td>';
+		$html .= '<td class="ordernumber_scope">' . $this->_convertScopeToString($counter->getNumberScope()) . '</td>';
 		$html .= '<td class="ordernumber_name">' . $counter->getNumberFormat() . '</td>';
 		$html .= '<td class="ordernumber_counter">' .
 		           '<div class="">' . (int)$counter->getCount() . '</div>' .

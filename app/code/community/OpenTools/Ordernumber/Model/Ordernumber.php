@@ -8,13 +8,11 @@ class OpenTools_Ordernumber_Model_Ordernumber extends Mage_Core_Model_Abstract
          parent::_construct();
          $this->_init('opentools_ordernumber/ordernumber');
      }
-     public function getCounterValueIncremented($nrtype, $format, $increment=1, $website_id=0, $group_id=0, $store_id=0) {
+     public function getCounterValueIncremented($nrtype, $format, $increment=1, $scope_id='') {
         $helper = Mage::helper('ordernumber');
-        $this->loadNumberCounter($nrtype, $format, $website_id, $group_id, $store_id);
+        $this->loadNumberCounter($nrtype, $format, $scope_id);
 
-        $this->setWebsiteId($website_id);
-        $this->setGroupId($group_id);
-        $this->setStoreId($store_id);
+        $this->setNumberScope($scope_id);
         $this->setNumberType($nrtype);
         $this->setNumberFormat($format);
         $count = $this->getCount() + $increment;
@@ -22,9 +20,9 @@ class OpenTools_Ordernumber_Model_Ordernumber extends Mage_Core_Model_Abstract
         $res = $this->save();
         return $count;
      }
-    public function loadNumberCounter($nrtype, $format, $website_id, $group_id, $store_id)
+    public function loadNumberCounter($nrtype, $format, $scope_id='')
     {
-        $this->_getResource()->loadNumberCounter($this, $nrtype, $format, $website_id, $group_id, $store_id);
+        $this->_getResource()->loadNumberCounter($this, $nrtype, $format, $scope_id);
         $this->_afterLoad();
         $this->setOrigData();
         $this->_hasDataChanges = false;
