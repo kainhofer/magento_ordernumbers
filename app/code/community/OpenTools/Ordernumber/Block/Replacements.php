@@ -78,6 +78,7 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 	        }
 	    }
 
+	    $html = '';
 	    if ($element->getTooltip()) {
 	        $html .= '<td class="value with-tooltip"  colspan="2">';
 	        $html .= $this->_getElementHtml($element);
@@ -145,7 +146,7 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 	{
 		$html  = '<tr class="headings">';
 		$html .= '<th>'. $this->__('If Variable ...') . '</th>';
-		$html .= '<th>'. $this->__('is / contains ...') . '</th>';
+		$html .= '<th>'. $this->__('is ...') . '</th>';
 		$html .= '<th></th>';
 		$html .= '<th>'. $this->__('Set this variable ..') . '</th>';
 		$html .= '<th>'. $this->__('to value ...') . '</th>';
@@ -167,11 +168,11 @@ class OpenTools_Ordernumber_Block_Replacements extends Mage_Adminhtml_Block_Syst
 	    $disabled = $this->_getDisabled($rowIndex == -1);
 		$html  = '<tr class="'.$class.'">';
 		$class = ($class=='odd')?'even':'odd';
-		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[conditionvar][]" value="' . $values['conditionvar'] . '" ' . $disabled . '/></td>';
-		$html .= '<td class="oton-replacement-value"   ><input name="' . $this->getElement()->getName() . '[conditionval][]" value="' . $values['conditionval'] . '" ' . $disabled . '/></td>';
+		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[conditionvar][]" value="' . (($rowIndex>=0)?$values['conditionvar']:'') . '" ' . $disabled . '/></td>';
+		$html .= '<td class="oton-replacement-value"   ><input name="' . $this->getElement()->getName() . '[conditionval][]" value="' . (($rowIndex>=0)?$values['conditionval']:'') . '" ' . $disabled . '/></td>';
 		$html .= '<td>=></td>';
-		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[newvar][]"       value="' . $values['newvar'] .       '" ' . $disabled . '/></td>';
-		$html .= '<td class="oton-replacement-newvalue"><input name="' . $this->getElement()->getName() . '[newval][]"       value="' . $values['newval'] .       '" ' . $disabled . '/></td>';
+		$html .= '<td class="oton-replacement-variable"><input name="' . $this->getElement()->getName() . '[newvar][]"       value="' . (($rowIndex>=0)?$values['newvar']:'') .       '" ' . $disabled . '/></td>';
+		$html .= '<td class="oton-replacement-newvalue"><input name="' . $this->getElement()->getName() . '[newval][]"       value="' . (($rowIndex>=0)?$values['newval']:'') .       '" ' . $disabled . '/></td>';
 		$html .= '<td>' . $this->_getDeleteRowButtonHtml() . '</td>';
 		$html .= '</tr>';
 

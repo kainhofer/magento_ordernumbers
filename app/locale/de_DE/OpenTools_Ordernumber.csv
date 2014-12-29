@@ -60,3 +60,16 @@
 "Variable Replacements", "Variablenersetzung"
 "Website #", "Webseite #"
 
+"If Variable ...", "Wenn Variable ..."
+"is ...", "gleich ..."
+"Set this variable ..", "Setze Variable ..."
+"to value ...", "auf Wert ..."
+
+"Counter '%s' (type: %s, scope: %s) already exists and is being modified. Will not add again.", "Zähler '%s' (Typ: %s, Anwendungsbereich: %s) existiert bereits und wird modifiziert. Wird daher nicht neu hinzugefügt."
+"Counter '%s' (type: %s, scope: %s) already exists, modifying it to value %d", "Zähler '%s' (Typ: %s, Anwendungsbereich: %s) existiert bereits, modifiziere Wert auf %d."
+"Successfully created counter '%s' (type: %s, scope: %s) with value %d", "Zähler '%s' (Typ: %s, Anwendungsbereich: %s) mit Wert %d erfolgreich hinzugefügt."
+"Counter '%s' (type: %s, scope: %s) was changed in the background in the dabase from %d to %d. Overwriting with %d.", "Zähler '%s' (Typ: %s, Anwendungsbereich: %s) wurde im Hintergrund in der Datenbank von Wert %d auf %d verändert. Diese Änderungen werden mit dem Wert %d überschrieben."
+"Successfully changed counter '%s' (type: %s, scope: %s) from %d to %d", "Zähler '%s' (Typ: %s, Anwendungsbereich: %s) erfolgreich von %d auf %d gesetzt."
+"Counter '%s' (type: %s, scope: %s) was changed in the background in the dabase from %d to %d. Deleting it nonetheless.", "Zähler %s (Typ: %s, Anwendungsbereich: %s) wurde im Hintergrund in der Datenbank von Wert %d auf %d verändert. Wird dennoch entfernt."
+"Successfully deleted counter '%s' (type: %s, scope: %s) with value %d", "Zähler '%s' (Typ: %s, Anwendungsbereich: %s) mit Wert %d erfolgreich entfernt."
+

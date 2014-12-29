@@ -150,16 +150,16 @@ function logitem($label, $item) {
                 // TODO: Handle lists
                 $found = true;
                 $compareval = null /* TODO */;
-            } elseif ($compareval = $order->getData($conditionvar)) {
+            } elseif ($order && $compareval = $order->getData($conditionvar)) {
                 // TODO: Handle order property
                 $found = true;
-            } elseif ($compareval = $customer->getData($conditionvar)) {
+            } elseif ($customer && $compareval = $customer->getData($conditionvar)) {
                 // TODO: Handle customer property
                 $found = true;
-            } elseif ($compareval = $address->getData($conditionvar)) {
+            } elseif ($address && $compareval = $address->getData($conditionvar)) {
                 // TODO: Handle address property
                 $found = true;
-            } elseif ($compareval = $store->getData($conditionvar)) {
+            } elseif ($store && $compareval = $store->getData($conditionvar)) {
                 // TODO: Handle store property
                 $found = true;
             } else {
@@ -184,7 +184,7 @@ function logitem($label, $item) {
     }
 
     function doReplacements ($fmt, $reps) {
-        // First, replace all randomXXX[n] fields. This needs to be done with a regexp and a callback:
+        // First, replace all random...[n] fields. This needs to be done with a regexp and a callback:
         $fmt = preg_replace_callback ('/\[(random)(.*?)([0-9]*?)\]/', array($this, 'replaceRandom'), $fmt);
         return str_ireplace (array_keys($reps), array_values($reps), $fmt);
     }

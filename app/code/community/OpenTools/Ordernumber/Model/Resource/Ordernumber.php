@@ -14,9 +14,19 @@ class OpenTools_Ordernumber_Model_Resource_Ordernumber extends Mage_Core_Model_R
 
             $select = $read->select()
                 ->from($this->getMainTable())
-                ->where($typefield . '=?', $nrtype)
-                ->where($formatfield .'=?', $format)
-                ->where($scopefield . '=?', $scope);
+                ->where($typefield . '=?', $nrtype);
+            if (empty($format)) {
+                // Treat both null and '' as "Global counter"; Magento will currently store '' as NULL, but who knows what the future brings.
+                $select = $select->where('(' . $formatfield.' IS NULL OR '.$formatfield.'=\'\')');
+            } else {
+                $select = $select->where($formatfield .'=?', $format);
+            }
+            if (empty($scope)) {
+                // Treat both null and '' as "Global scope"; Magento will currently store '' as NULL, but who knows what the future brings.
+                $select = $select->where('(' . $scopefield .' IS NULL OR '.$scopefield .'=\'\')');
+            } else {
+                $select = $select->where($scopefield . '=?', $scope);
+            }
             $data = $read->fetchRow($select);
             if ($data) {
                 $object->setData($data);

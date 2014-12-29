@@ -37,7 +37,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 	 *
 	 * @param Varien_Data_Form_Element_Abstract $element
 	 * @return string
-	*/
+	 */
 	public function render(Varien_Data_Form_Element_Abstract $element)
 	{
 		$this->setElement($element);
@@ -50,7 +50,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 		$html .= '<div class="grid"><table id="ordernumber_counters_table" class="data" style="width: 100%;">';
 		$html .= $this->_getRowHeader();
 
-		$collection = $this->getModel()->getCollection();
+		$collection = $this->getModel()->getCollection()->addOrder('number_type', Varien_Data_Collection::SORT_ORDER_ASC)->addOrder('number_format', Varien_Data_Collection::SORT_ORDER_ASC);
 		foreach ($collection as $counter) {
 			$html .= $this->_getRowHtml($counter);
 		}
@@ -121,7 +121,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 	 * @param array $websiteIds
 	 * @return array
 	 */
-	public function _getScoreStructureOptions($isAll = false)
+	public function _getScoreStructureOptions($isAll = false, $websiteIds = array(), $groupIds = array(), $storeIds = array())
 	{
 	    $sstore = Mage::getSingleton('adminhtml/system_store');
         $nonEscapableNbspChar = html_entity_decode('&#160;', ENT_NOQUOTES, 'UTF-8');

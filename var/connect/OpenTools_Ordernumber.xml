@@ -1,5 +1,5 @@
 <_>
-   <form_key>ZV49LPLMxTBr5Syu</form_key>
+   <form_key>BdrKY2F3O8Sn4JoR</form_key>
    <name>OpenTools_Ordernumber</name>
    <channel>community</channel>
    <version_ids>
@@ -10,8 +10,10 @@
    <license>OSL</license>
    <license_uri/>
    <version>0.1.0</version>
-   <stability>devel</stability>
-   <notes>Very first released version, should correctly assign all numbers, though.</notes>
+   <stability>alpha</stability>
+   <notes>Initial Release of the OpenTools Ordernumber Module for Magento.
+
+All number types should be correctly implemented, variable substitutions are available and manually setting the counter(s) is alspo available.</notes>
    <authors>
       <name>
          <name>Reinhold Kainhofer</name>
@@ -40,7 +42,7 @@
             <max/>
          </max>
          <files>
-            <files>        </files>
+            <files>              </files>
          </files>
       </package>
       <extension>
@@ -60,23 +62,33 @@
          <target>magelocal</target>
          <target>magecommunity</target>
          <target>mageetc</target>
+         <target>magelocale</target>
+         <target>magelocale</target>
       </target>
       <path>
          <path/>
          <path>OpenTools/Ordernumber/</path>
          <path>modules/OpenTools_Ordernumber.xml</path>
+         <path>de_DE/OpenTools_Ordernumber.csv</path>
+         <path>en_US/OpenTools_Ordernumber.csv</path>
       </path>
       <type>
          <type>file</type>
          <type>dir</type>
+         <type>file</type>
+         <type>file</type>
          <type>file</type>
       </type>
       <include>
          <include/>
          <include/>
          <include/>
+         <include/>
+         <include/>
       </include>
       <ignore>
+         <ignore/>
+         <ignore/>
          <ignore/>
          <ignore/>
          <ignore/>

@@ -46,4 +46,14 @@ class OpenTools_Ordernumber_Model_Ordernumber extends Mage_Core_Model_Abstract
         return $this->getNumberTypes()[$type];
     }
 
+    public function readableScope($scope)
+    {
+        if (empty($scope)) {
+            $helper = Mage::helper('ordernumber');
+
+            return $helper->__('Global');
+        } else
+            return $scope;
+    }
+
 }

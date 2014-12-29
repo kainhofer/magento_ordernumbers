@@ -39,9 +39,13 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
         return $this->_dbModel;
     }
 
-    // This trigger is called directly after the increment ID is reserved for an order
-    // TODO: Ideally, we would overwrite the reserveOrderId function!
-    //       Then magento would not create/reserve an order number in the first place
+    /** This trigger is called directly after the increment ID is reserved for an order
+     * Ideally, we would overwrite the reserveOrderId function, so that magento does not
+     * create/reserve an order number in the first place
+     * Problem is, no order information is passed to the increment id model,
+     * so we would have to hack (i.e. rewrite) many more models to pass on this information,
+     * which will in the end lead to an even worse code quality...
+     */
     public function sales_model_service_quote_submit_before ($observer) {
         $order = $observer->getEvent()->getOrder();
         return $this->handle_new_number('order', $order, $order);
@@ -87,15 +91,13 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
             $helper = Mage::helper('ordernumber');
             $info = array('order'=>$order, $nrtype=>$object);
 
-//             TODO: foreach ($customvars)
-
-            // The ordernumber/XXXnumbers/reset contains some pre-defined counter names as
+            // The ordernumber/...numbers/reset contains some pre-defined counter names as
             // well as enum values indicating certain behavior. Replace those by the actual
             // counter names for the current counter:
             switch ($reset) {
                 case 0:  $format = $format . '|'; break;
                 case 1:  $format = $format . '|' . $format; break;
-                case -1: $format = $foramt . '|' . $counterfmt; break;
+                case -1: $format = $format . '|' . $counterfmt; break;
                 default: /* Pre-defined counter formats saved in the /reset config field */
                     $counterfmt = $format . '|' . $reset; break;
             }
@@ -104,7 +106,7 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
                 $customvars = $customvars['replacements'];
             if ($customvars)
                 $customvars = unserialize($customvars);
-Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
+// Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
 
             // Now apply the replacements
             $nr = $helper->replace_fields ($format, $nrtype, $info, $customvars);
@@ -122,7 +124,7 @@ Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
             $count = 0;
             $created = false;
             // Make up to 150 attempts to create a number...
-            while (empty($newnumber) && (count<150)) {
+            while (empty($newnumber) && ($count<150)) {
                 $count += 1;
 
                 // Find the next counter value
@@ -146,7 +148,7 @@ Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
                 }
             }
             if (!$created) {
-                Mage::Log("Unable to create $nrtype number for counter format $nr (name $counterfmt)...", null, 'ordernumber.log');
+                Mage::Log("Unable to create $nrtype number for counter format $nr (name $counterfmt, scope $scope_id)...", null, 'ordernumber.log');
             }
         }
     }
