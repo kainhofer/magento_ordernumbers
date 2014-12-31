@@ -1,7 +1,8 @@
 <?php
 class OpenTools_Ordernumber_Model_Resource_Ordernumber_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
- {
-     public function _construct() {
+{
+     public function _construct()
+     {
          parent::_construct();
          $this->_init('opentools_ordernumber/ordernumber');
      }

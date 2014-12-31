@@ -1,13 +1,14 @@
 <?php
 class OpenTools_Ordernumber_Model_Backend_Replacements extends Mage_Adminhtml_Model_System_Config_Backend_Serialized
 {
-	function logitem($label, $item) {
-		Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
-		Mage::Log(is_array($item)?$item:$item->debug(), null, 'ordernumber.log');
-		Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');
-	}
+    protected function logitem($label, $item)
+    {
+        Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
+        Mage::Log(is_array($item)?$item:$item->debug(), null, 'ordernumber.log');
+        Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');
+    }
 
-    var $keywords = array("conditionvar", "conditionval", "newvar", "newval");
+    protected $_keywords = array("conditionvar", "conditionval", "newvar", "newval");
 
     /**
      * The form contains the values as one array for the conditionvars, one for the conditionvals,
@@ -22,15 +23,15 @@ $this->logitem("OpenTools_Ordernumber_Model_Backend_Replacements: ", $this);
         // Transpose the vals:
         $vallist = array();
         if ($vals) {
-            foreach ($vals[$this->keywords[1]] as $i => $dummy) {
+            foreach ($vals[$this->_keywords[1]] as $i => $dummy) {
                 $entry = array();
-                foreach ($this->keywords as $k) {
+                foreach ($this->_keywords as $k) {
                     $entry[$k] = $vals[$k][$i];
                 }
                 $vallist[] = $entry;
             }
         }
-Mage::Log("transposed vallist: ".print_r($vallist,1), null, 'ordernumber.log');
+Mage::Log("transposed vallist: ".print_r($vallist, 1), null, 'ordernumber.log');
         $this->setValue($vallist);
         return parent::_beforeSave();
     }

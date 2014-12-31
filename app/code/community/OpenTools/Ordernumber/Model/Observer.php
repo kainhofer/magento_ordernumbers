@@ -22,21 +22,23 @@
  */
 class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
 {
-     public function _construct()
-     {
-         parent::_construct();
-         $this->_init('ordernumber/ordernumber');
-     }
-
     protected $_dbModel = null;
-    protected function _getModel() {
+    protected function _getModel()
+    {
         return Mage::getModel('opentools_ordernumber/ordernumber');
     }
 
-    public function getModel() {
+    public function getModel()
+    {
         if (is_null($this->_dbModel))
             $this->_dbModel = $this->_getModel();
         return $this->_dbModel;
+    }
+
+    public function _construct()
+    {
+        parent::_construct();
+        $this->_init('ordernumber/ordernumber');
     }
 
     /** This trigger is called directly after the increment ID is reserved for an order
@@ -46,31 +48,37 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
      * so we would have to hack (i.e. rewrite) many more models to pass on this information,
      * which will in the end lead to an even worse code quality...
      */
-    public function sales_model_service_quote_submit_before ($observer) {
+    public function sales_model_service_quote_submit_before ($observer)
+    {
         $order = $observer->getEvent()->getOrder();
         return $this->handle_new_number('order', $order, $order);
     }
-    public function sales_order_save_before ($observer) {
+    public function sales_order_save_before ($observer)
+    {
         $order = $observer->getEvent()->getOrder();
         return $this->handle_new_number('order', $order, $order);
     }
 
-    public function sales_order_invoice_save_before ($observer) {
+    public function sales_order_invoice_save_before ($observer)
+    {
         $invoice = $observer->getEvent()->getInvoice();
         return $this->handle_new_number('invoice', $invoice, $invoice->getOrder());
     }
 
-    public function sales_order_shipment_save_before ($observer) {
+    public function sales_order_shipment_save_before ($observer)
+    {
         $shipment = $observer->getEvent()->getShipment();
         return $this->handle_new_number('shipment', $shipment, $shipment->getOrder());
     }
 
-    public function sales_order_creditmemo_save_before ($observer) {
+    public function sales_order_creditmemo_save_before ($observer)
+    {
         $creditmemo = $observer->getEvent()->getCreditmemo();
         return $this->handle_new_number('creditmemo', $creditmemo, $creditmemo->getOrder());
     }
 
-    public function handle_new_number ($nrtype, $object, $order) {
+    public function handle_new_number ($nrtype, $object, $order)
+    {
         $store = $order->getStore();
         $storeId = $store->getStoreId();
         $cfgprefix = 'ordernumber/'.$nrtype.'numbers';
@@ -95,17 +103,27 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
             // well as enum values indicating certain behavior. Replace those by the actual
             // counter names for the current counter:
             switch ($reset) {
-                case 0:  $format = $format . '|'; break;
-                case 1:  $format = $format . '|' . $format; break;
-                case -1: $format = $format . '|' . $counterfmt; break;
-                default: /* Pre-defined counter formats saved in the /reset config field */
-                    $counterfmt = $format . '|' . $reset; break;
+                case 0:
+                    $format = $format . '|';
+                    break;
+                case 1:
+                    $format = $format . '|' . $format;
+                    break;
+                case -1:
+                    $format = $format . '|' . $counterfmt;
+                    break;
+                default:
+                    /* Pre-defined counter formats saved in the /reset config field */
+                    $counterfmt = $format . '|' . $reset;
+                    break;
             }
             $customvars = Mage::getStoreConfig('ordernumber/replacements', $storeId);
-            if (isset($customvars['replacements']))
+            if (isset($customvars['replacements'])) {
                 $customvars = $customvars['replacements'];
-            if ($customvars)
+            }
+            if ($customvars) {
                 $customvars = unserialize($customvars);
+            }
 // Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
 
             // Now apply the replacements
@@ -128,11 +146,11 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
                 $count += 1;
 
                 // Find the next counter value
-                $scope_id = '';
-                if ($scope>=1) $scope_id = $store->getWebsiteId();
-                if ($scope>=2) $scope_id .= '/' . $store->getGroupId();
-                if ($scope>=3) $scope_id .= '/' . $store->getStoreId();
-                $count = $model->getCounterValueIncremented($nrtype, $counterfmt, $increment, $scope_id);
+                $scopeId = '';
+                if ($scope>=1) $scopeId = $store->getWebsiteId();
+                if ($scope>=2) $scopeId .= '/' . $store->getGroupId();
+                if ($scope>=3) $scopeId .= '/' . $store->getStoreId();
+                $count = $model->getCounterValueIncremented($nrtype, $counterfmt, $increment, $scopeId);
                 $newnumber = str_replace ("#", sprintf('%0' . (int)$digits . 's', $count), $format);
 
                 // Check whether that number is already in use. If so, attempt to create the next number:
@@ -148,7 +166,7 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
                 }
             }
             if (!$created) {
-                Mage::Log("Unable to create $nrtype number for counter format $nr (name $counterfmt, scope $scope_id)...", null, 'ordernumber.log');
+                Mage::Log("Unable to create $nrtype number for counter format $nr (name $counterfmt, scope $scopeId)...", null, 'ordernumber.log');
             }
         }
     }

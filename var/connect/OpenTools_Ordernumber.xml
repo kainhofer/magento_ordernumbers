@@ -1,5 +1,5 @@
 <_>
-   <form_key>BdrKY2F3O8Sn4JoR</form_key>
+   <form_key>QQD0m3HjqYDMtc0C</form_key>
    <name>OpenTools_Ordernumber</name>
    <channel>community</channel>
    <version_ids>
@@ -42,7 +42,7 @@ All number types should be correctly implemented, variable substitutions are ava
             <max/>
          </max>
          <files>
-            <files>              </files>
+            <files>                  </files>
          </files>
       </package>
       <extension>

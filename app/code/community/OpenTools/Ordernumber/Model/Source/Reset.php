@@ -11,7 +11,7 @@ class OpenTools_Ordernumber_Model_Source_Reset
             array('value' => '[year]-[month]', 'label' => $helper->__('New counter for each month')),
             array('value' => '[year]-[month]-[day]', 'label' => $helper->__('New counter for each day')),
             array('value' => '1', 'label' => $helper->__('Separate counter for each Format Value')),
-        	array('value' => '-1', 'label' => $helper->__('Custom counter Name')),
+            array('value' => '-1', 'label' => $helper->__('Custom counter Name')),
         );
         return $reset;
     }

@@ -8,21 +8,23 @@ class OpenTools_Ordernumber_Model_Ordernumber extends Mage_Core_Model_Abstract
          parent::_construct();
          $this->_init('opentools_ordernumber/ordernumber');
      }
-     public function getCounterValueIncremented($nrtype, $format, $increment=1, $scope_id='') {
+     public function getCounterValueIncremented($nrtype, $format, $increment=1, $scopeId='')
+     {
         $helper = Mage::helper('ordernumber');
-        $this->loadNumberCounter($nrtype, $format, $scope_id);
-
-        $this->setNumberScope($scope_id);
+        $this->loadNumberCounter($nrtype, $format, $scopeId);
+$helper->logitem("Loaded counter: ", $this);
+        $this->setNumberScope($scopeId);
         $this->setNumberType($nrtype);
         $this->setNumberFormat($format);
         $count = $this->getCount() + $increment;
         $this->setCount($count);
         $res = $this->save();
+$helper->logitem("Saved counter: ", $res);
         return $count;
      }
-    public function loadNumberCounter($nrtype, $format, $scope_id='')
+    public function loadNumberCounter($nrtype, $format, $scopeId='')
     {
-        $this->_getResource()->loadNumberCounter($this, $nrtype, $format, $scope_id);
+        $this->_getResource()->loadNumberCounter($this, $nrtype, $format, $scopeId);
         $this->_afterLoad();
         $this->setOrigData();
         $this->_hasDataChanges = false;
@@ -52,8 +54,9 @@ class OpenTools_Ordernumber_Model_Ordernumber extends Mage_Core_Model_Abstract
             $helper = Mage::helper('ordernumber');
 
             return $helper->__('Global');
-        } else
+        } else {
             return $scope;
+        }
     }
 
 }

@@ -2,11 +2,13 @@
 class OpenTools_Ordernumber_Model_Backend_Counters extends Mage_Core_Model_Config_Data
 {
     protected $_dbModel = null;
-    protected function _getModel() {
+    protected function _getModel()
+    {
         return Mage::getModel('opentools_ordernumber/ordernumber');
     }
 
-    public function getModel() {
+    public function getModel()
+    {
         if (is_null($this->_dbModel))
             $this->_dbModel = $this->_getModel();
         return $this->_dbModel;
@@ -79,7 +81,11 @@ class OpenTools_Ordernumber_Model_Backend_Counters extends Mage_Core_Model_Confi
                 $counter = $model->load($countid);
                 if ($counter->getCount() != $oldval) {
                     $session->addWarning($helper->__('Counter \'%s\' (type: %s, scope: %s) was changed in the background in the dabase from %d to %d. Deleting it nonetheless.',
-                            $counter->getNumberFormat(), $model->readableType($counter->getNumberType()), $model->readableScope($counter->getNumberScope()), $oldval, $counter->getCount()));
+                            $counter->getNumberFormat(),
+                            $model->readableType($counter->getNumberType()),
+                            $model->readableScope($counter->getNumberScope()),
+                            $oldval,
+                            $counter->getCount()));
                 }
                 $counter->delete();
                 $session->addSuccess($helper->__('Successfully deleted counter \'%s\' (type: %s, scope: %s) with value %d',
