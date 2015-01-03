@@ -266,8 +266,8 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1836"
-     inkscape:window-height="832"
+     inkscape:window-width="1282"
+     inkscape:window-height="597"
      id="namedview4"
      showgrid="false"
      inkscape:zoom="1"
@@ -276,7 +276,7 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="svg2" />
   <image
      width="1023"
      height="314"
@@ -347,16 +347,19 @@
      y="158.6013"
      rx="15.798828"
      ry="15.32231" />
-  <rect
-     style="fill:#fceacc;fill-opacity:1;stroke:#502d16;stroke-width:2.61387539000000002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter3075)"
-     id="rect3757-7"
-     width="293.38611"
-     height="173.38612"
-     x="102.00696"
-     y="41.806938"
-     rx="12.604974"
-     ry="26.885887"
-     transform="matrix(1.371778,0,0,0.49723865,295.47156,40.73421)" />
+  <a
+     id="a3183">
+    <rect
+       transform="matrix(1.371778,0,0,0.49723865,295.47156,40.73421)"
+       ry="26.885887"
+       rx="12.604974"
+       y="41.806938"
+       x="102.00696"
+       height="173.38612"
+       width="293.38611"
+       id="rect3757-7"
+       style="fill:#fceacc;fill-opacity:1;stroke:#502d16;stroke-width:2.61387539000000002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter3075)" />
+  </a>
   <path
      style="fill:none;stroke:#502d16;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
      d="m 434.48429,92.84767 c 0,0 -15.83402,-2.877683 -31.80695,14 -14.98465,15.83342 -15,49 -15,49"
