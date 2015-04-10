@@ -1,0 +1,5 @@
+app/code/community/OpenTools/Ordernumber/
+app/etc/modules/OpenTools_Ordernumber.xml
+app/locale/en_US/OpenTools_Ordernumber.csv
+app/locale/de_DE/OpenTools_Ordernumber.csv
+var/connect/OpenTools_Ordernumber.xml
