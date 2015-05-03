@@ -29,7 +29,7 @@
 "Number of digits for the counter", "Ziffernanzahl des Zählers"
 "ORDERNUMBER_COUNTERTABLE_WARNING", "Alle Änderungen werden erst durch die Schaltfläche ""Konfig. speichern"" übernommen. Falls in der Zwischenzeit Bestellungen getätigt werden, so werden die geänderten Zähler dennoch überschrieben!"
 "ORDERNUMBER_DIGITS_TOOLTIP", "Ein # wird durch den Zähler ersetzt, wobei dieser mit 0 auf die hier festgesetzte Mindestlänge aufgefüllt wird."
-"ORDERNUMBER_FORMAT_COMMENT","Hilfe finden Sie auf <a href='http://open-tools.net/documentation/ordernumber-plugin-for-virtuemart.html'>unserer Homepage</a>."
+"ORDERNUMBER_FORMAT_COMMENT","Hilfe finden Sie auf <a href='http://open-tools.net/documentation/advanced-order-numbers-for-magento.html'>unserer Homepage</a>."
 "ORDERNUMBER_FORMAT_TOOLTIP","Testfeld, wobei [...] eine Variable bezeichnet und # durch den Wert des Zählers ersetzt wird. Mögliche Variablen sind (Groß-Kleinschreibung ist egal):<table>
     <tr><td>[year], [year2], [month], [day], [hour], [hour12], [ampm], [minute], [second]</td><td>Aktuelle Zeit, wenn die Bestellung getätigt wird</td></tr>
     <tr><td>[randomDigit<i>n</i>], [randomHex<i>n</i>], [randomHex<i>n</i>], [randomLetter<i>n</i>], [randomULetter<i>n</i>], [randomLLetter<i>n</i>], [randomAlphanum<i>n</i>]</td><td>Zufallsfolgen der Länge <i>n</i> (n=1 wenn nicht angegeben)</td></tr>

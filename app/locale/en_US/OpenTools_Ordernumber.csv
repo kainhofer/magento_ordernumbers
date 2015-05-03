@@ -2,7 +2,7 @@
 # (C) 2014-2015 Reinhold Kainhofer, Open Tools
 #     office@open-tools.net, http://www.open-tools.net/
 "ORDERNUMBER_COUNTERTABLE_WARNING", "NOTE: Counters will be created automatically starting with 1 whenever needed. There is no need to create a counter manually, unless you need a new counter to start from a value different from 1!<br> All changes made to the counter values will be applied when you press save. Please be aware that in the meantime an order might have been created, so the counter might already be out of date!"
-"ORDERNUMBER_FORMAT_COMMENT","For help, see <a href='http://open-tools.net/documentation/ordernumber-plugin-for-virtuemart.html'>our homepage</a>."
+"ORDERNUMBER_FORMAT_COMMENT","For help, see <a href='http://open-tools.net/documentation/advanced-order-numbers-for-magento.html'>our homepage</a>."
 "ORDERNUMBER_FORMAT_TOOLTIP","A string, where [...] indicates a variable and # is replaced with the counter. Possible (case-insensitive) variables are:<table>
 <tr><td>[year], [year2], [month], [day], [hour], [hour12], [ampm], [minute], [second]</td><td>Components of the current date when the number is generated</td></tr>
 <tr><td>[randomDigit<i>n</i>], [randomHex<i>n</i>], [randomHex<i>n</i>], [randomLetter<i>n</i>], [randomULetter<i>n</i>], [randomLLetter<i>n</i>], [randomAlphanum<i>n</i>]</td><td>Random numbers an strings of length <i>n</i> (n=1 if left out)</td></tr>
