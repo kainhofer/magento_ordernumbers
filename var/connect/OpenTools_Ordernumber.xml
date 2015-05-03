@@ -1,5 +1,5 @@
 <_>
-   <form_key>QQD0m3HjqYDMtc0C</form_key>
+   <form_key>rPKbjNGWk4Um4nzS</form_key>
    <name>OpenTools_Ordernumber</name>
    <channel>community</channel>
    <version_ids>
@@ -9,11 +9,14 @@
    <description>This extensions allows you to freely customize the order, invoice, shipment and creditmemo numbers. Even multiple counters are possible.</description>
    <license>OSL</license>
    <license_uri/>
-   <version>0.1.0</version>
-   <stability>alpha</stability>
-   <notes>Initial Release of the OpenTools Ordernumber Module for Magento.
+   <version>0.2.0</version>
+   <stability>beta</stability>
+   <notes>All number types should be correctly implemented, variable substitutions are available and manually setting the counter(s) is also available.
 
-All number types should be correctly implemented, variable substitutions are available and manually setting the counter(s) is alspo available.</notes>
+Bugfix release:
+- install script failed when DB already existed
+- support for PHP 5.3
+- Fix wrong documentation link</notes>
    <authors>
       <name>
          <name>Reinhold Kainhofer</name>
@@ -31,18 +34,23 @@ All number types should be correctly implemented, variable substitutions are ava
       <package>
          <name>
             <name/>
+            <name/>
          </name>
          <channel>
+            <channel/>
             <channel/>
          </channel>
          <min>
             <min/>
+            <min/>
          </min>
          <max>
             <max/>
+            <max/>
          </max>
          <files>
-            <files>                  </files>
+            <files>                     </files>
+            <files>                     </files>
          </files>
       </package>
       <extension>
