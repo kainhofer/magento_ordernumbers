@@ -45,7 +45,8 @@ $helper->logitem("Saved counter: ", $res);
     }
     public function readableType($type)
     {
-        return $this->getNumberTypes()[$type];
+		$types = $this->getNumberTypes();
+        return $types[$type];
     }
 
     public function readableScope($scope)
