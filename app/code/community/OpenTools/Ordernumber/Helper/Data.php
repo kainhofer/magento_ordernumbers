@@ -206,9 +206,9 @@ class OpenTools_Ordernumber_Helper_Data extends Mage_Core_Helper_Abstract
                 // TODO: Handle store property
                 $found = true;
             } else {
-                // TODO: Handly other possible properties!
+                // TODO: Handle other possible properties!
                 // TODO: Print out warning that variable could not be found.
-                Mage::getSingleton('core/session')->addWarning($this->__('Unable to find variable "%s" used in the ordernumber custom variable definitions.', $conditionvar));
+//                 Mage::getSingleton('core/session')->addWarning($this->__('Unable to find variable "%s" used in the ordernumber custom variable definitions.', $conditionvar));
             }
             if ($found) {
                 if (is_array($compareval)) {
