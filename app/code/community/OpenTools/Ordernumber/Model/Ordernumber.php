@@ -12,14 +12,14 @@ class OpenTools_Ordernumber_Model_Ordernumber extends Mage_Core_Model_Abstract
      {
         $helper = Mage::helper('ordernumber');
         $this->loadNumberCounter($nrtype, $format, $scopeId);
-$helper->logitem("Loaded counter: ", $this);
+// $helper->logitem("Loaded counter: ", $this);
         $this->setNumberScope($scopeId);
         $this->setNumberType($nrtype);
         $this->setNumberFormat($format);
         $count = $this->getCount() + $increment;
         $this->setCount($count);
         $res = $this->save();
-$helper->logitem("Saved counter: ", $res);
+// $helper->logitem("Saved counter: ", $res);
         return $count;
      }
     public function loadNumberCounter($nrtype, $format, $scopeId='')
@@ -45,7 +45,7 @@ $helper->logitem("Saved counter: ", $res);
     }
     public function readableType($type)
     {
-		$types = $this->getNumberTypes();
+        $types = $this->getNumberTypes();
         return $types[$type];
     }
 

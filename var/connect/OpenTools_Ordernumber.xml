@@ -1,5 +1,5 @@
 <_>
-   <form_key>rPKbjNGWk4Um4nzS</form_key>
+   <form_key>if50zYnKOzN3JQdl</form_key>
    <name>OpenTools_Ordernumber</name>
    <channel>community</channel>
    <version_ids>
@@ -9,14 +9,11 @@
    <description>This extensions allows you to freely customize the order, invoice, shipment and creditmemo numbers. Even multiple counters are possible.</description>
    <license>OSL</license>
    <license_uri/>
-   <version>0.2.0</version>
-   <stability>beta</stability>
-   <notes>All number types should be correctly implemented, variable substitutions are available and manually setting the counter(s) is also available.
+   <version>1.0.0</version>
+   <stability>stable</stability>
+   <notes>Our first feature-complete, thoroughly tested public release of the module. 
 
-Bugfix release:
-- install script failed when DB already existed
-- support for PHP 5.3
-- Fix wrong documentation link</notes>
+Fixed some minor bugs compared to the pre-release versions.</notes>
    <authors>
       <name>
          <name>Reinhold Kainhofer</name>
@@ -49,8 +46,8 @@ Bugfix release:
             <max/>
          </max>
          <files>
-            <files>                     </files>
-            <files>                     </files>
+            <files>                      </files>
+            <files>                      </files>
          </files>
       </package>
       <extension>
