@@ -20,9 +20,11 @@
  * @copyright  Copyright (c) 2010 Fooman Limited (http://www.fooman.co.nz)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
 {
     protected $_dbModel = null;
+
     protected function _getModel()
     {
         return Mage::getModel('opentools_ordernumber/ordernumber');

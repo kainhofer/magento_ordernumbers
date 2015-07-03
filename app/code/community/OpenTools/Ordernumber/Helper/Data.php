@@ -1,8 +1,13 @@
 <?php
+require_once(Mage::getBaseDir('lib') . '/OpenTools/Ordernumber/ordernumber_helper_magento.php');
+
 class OpenTools_Ordernumber_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    public function logitem($label, $item)
+	protected $helper = null;
+	
+    function __construct($label, $item)
     {
+        $this->helper = OrdernumberHelperMagento::getHelper();
         Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
         Mage::Log(is_array($item)?$item:$item->debug(), null, 'ordernumber.log');
         Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');

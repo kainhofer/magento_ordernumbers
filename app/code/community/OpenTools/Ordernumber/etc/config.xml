@@ -4,7 +4,7 @@
 <!-- declare module's version information -->
         <OpenTools_Ordernumber>
 <!-- this version number will be used for database upgrades -->
-            <version>0.1.0</version>
+            <version>1.0.0</version>
             <depends>
                 <Mage_Sales />
             </depends>
