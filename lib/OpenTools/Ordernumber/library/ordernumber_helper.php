@@ -6,7 +6,7 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
 **/
 
-if ( !defined( 'ABSPATH' ) && !defined('_JEXEC') ) { 
+if ( !defined( 'ABSPATH' ) && !defined('_JEXEC') && !defined('_OPENTOOLS_ORDERNUMBER_FRAMEWORK')) { 
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' );
 }
 
@@ -367,8 +367,6 @@ class OrdernumberHelper {
 		$format = $this->setupNumberFormatString($fmt, $type, $order, $reps);
 		$format = $this->doReplacements($format, $reps);
 		$ctrsettings = $this->extractCounterSettings ($format, $type, $ctrsettings);
-JFactory::getApplication()->enqueueMessage("<pre>Counter Settings: ".print_r($ctrsettings,1)."</pre>", 'error');
-// JFactory::getApplication()->enqueueMessage("<pre>Replacements for $type:".print_r($reps,1)."</pre>", 'error');
 		// Increment the counter only if the format contains a placeholder for it!
 		if (strpos($ctrsettings["${type}_format"], "#") !== false) {
 			$countername = $ctrsettings["${type}_counter"];

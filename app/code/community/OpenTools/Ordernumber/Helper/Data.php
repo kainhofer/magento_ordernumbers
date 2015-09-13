@@ -5,81 +5,31 @@ class OpenTools_Ordernumber_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	protected $helper = null;
 	
-    function __construct($label, $item)
+    function logitem($label, $item)
     {
-        $this->helper = OrdernumberHelperMagento::getHelper();
         Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
         Mage::Log(is_array($item)?$item:$item->debug(), null, 'ordernumber.log');
         Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');
-    }
-
-    /* Return a random "string" of the given length taken from the given alphabet */
-    protected function randomString($alphabet, $len)
+	}
+    function __construct()
     {
-        $alen = strlen($alphabet);
-        $r = "";
-        for ($n=0; $n<$len; $n++) {
-            $r .= $alphabet[mt_rand(0, $alen-1)];
-        }
-        return $r;
+        // Setup the ordernumber helper object and register the required callbacks:
+        $this->helper = OrdernumberHelperMagento::getHelper();
+
+		$this->helper->registerCallback('setupStoreReplacements',		array($this, 'setupStoreReplacements'));
+		
+		
+		$this->helper->registerCallback('setupOrderReplacements',		array($this, 'setupOrderReplacements'));
+		$this->helper->registerCallback('setupUserReplacements',		array($this, 'setupUserReplacements'));
+		$this->helper->registerCallback('setupShippingReplacements',	array($this, 'setupShippingReplacements'));
+		$this->helper->registerCallback('setupThirdPartyReplacements',	array($this, 'setupThirdPartyReplacements'));
     }
+    
+    public function getOrdernumberHelper() {
+		return $this->helper;
+	}
 
-    protected function replaceRandom ($match)
-    {
-        /* the regexp matches (random)(Type)(Len) as match, Type and Len is optional */
-        $len = ($match[3]?$match[3]:1);
-        // Fallback: If no Type is given, use Digit
-        $alphabet = "0123456789";
-        // Select the correct alphabet depending on Type
-        switch (strtolower($match[2])) {
-            case "digit":
-                $alphabet = "0123456789";
-                break;
-
-            case "hex":
-                $alphabet = "0123456789abcdef";
-                break;
-
-            case "letter":
-                $alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                break;
-
-            case "uletter":
-                $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                break;
-
-            case "lletter":
-                $alphabet = "abcdefghijklmnopqrstuvwxyz";
-                break;
-
-            case "alphanum":
-                $alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                break;
-        }
-        return self::randomString ($alphabet, $len);
-    }
-
-    protected function setupDateTimeReplacements (&$reps, $nrtype)
-    {
-        $utime = microtime(true);
-        $reps["[year]"] = date ("Y", $utime);
-        $reps["[year2]"] = date ("y", $utime);
-        $reps["[month]"] = date("m", $utime);
-        $reps["[day]"] = date("d", $utime);
-        $reps["[hour]"] = date("H", $utime);
-        $reps["[hour12]"] = date("h", $utime);
-        $reps["[ampm]"] = date("a", $utime);
-        $reps["[minute]"] = date("i", $utime);
-        $reps["[second]"] = date("s", $utime);
-        $milliseconds = (int)(1000*($utime - (int)$utime));
-        $millisecondsstring = sprintf('%03d', $milliseconds);
-        $reps["[decisecond]"] = $millisecondsstring[0];
-        $reps["[centisecond]"] = substr($millisecondsstring, 0, 2);
-        $reps["[millisecond]"] = $millisecondsstring;
-    }
-
-    protected function setupAddressReplacements(&$reps, $prefix, $address, $nrtype)
-    {
+    public function setupAddressReplacements(&$reps, $prefix, $address, $nrtype) {
         if (!$address) {
             return;
         }
@@ -103,147 +53,84 @@ class OpenTools_Ordernumber_Helper_Data extends Mage_Core_Helper_Abstract
         $reps["[".$prefix."countryid]"] = $country->getId();
 
     }
-    protected function setupStoreReplacements (&$reps, $order, $nrtype)
-    {
-        $store = $order->getStore();
-        $reps["[storeid]"] = $store->getStoreId();
-        $reps["[storecurrency]"] = $order->getStoreCurrency();
+    public function setupStoreReplacements (&$reps, $details, $nrtype) {
+		if (isset($details->order)) {
+			$order = $details->order;
+			$store = $order->getStore();
+			$reps["[storeid]"] = $store->getStoreId();
+			$reps["[storecurrency]"] = $order->getStoreCurrency();
+		}
     }
-    protected function setupOrderReplacements (&$reps, $order, $nrtype)
-    {
-        $shippingAddress = $order->getShippingAddress();
-        $billingAddress = $order->getBillingAddress();
-        if ($shippingAddress) {
-            $address = $shippingAddress;
-        } else {
-            $address = $billingAddress;
-        }
-        /* if ($nrtype == "invoice") {
-            // Invoices use the billing address for un-prefixed fields
-            $address = $billingAddress;
-        } */
-        $reps["[orderid]"] = $order->getId();
-        $reps["[ordernumber]"] = $order->getIncrementId();
-        $reps["[orderstatus]"] = $order->getStatus();
-        $reps["[currency]"] = $order->getOrderCurrency()->getCurrencyCode();
-        $reps["[customerid]"] = $order->getCustomerId();
-        $this->setupAddressReplacements($reps, "", $address, $nrtype);
-        $this->setupAddressReplacements($reps, "shipping", $shippingAddress, $nrtype);
-        $this->setupAddressReplacements($reps, "billing", $billingAddress, $nrtype);
+    public function setupOrderReplacements (&$reps, $details, $nrtype) {
+		if (isset($details->order)) {
+			$order = $details->order;
+			$shippingAddress = $order->getShippingAddress();
+			$billingAddress = $order->getBillingAddress();
+			if ($shippingAddress) {
+				$address = $shippingAddress;
+			} else {
+				$address = $billingAddress;
+			}
+			/* if ($nrtype == "invoice") {
+				// Invoices use the billing address for un-prefixed fields
+				$address = $billingAddress;
+			} */
+			$reps["[orderid]"] = $order->getId();
+			$reps["[ordernumber]"] = $order->getIncrementId();
+			$reps["[orderstatus]"] = $order->getStatus();
+			$reps["[currency]"] = $order->getOrderCurrency()->getCurrencyCode();
+			$reps["[customerid]"] = $order->getCustomerId();
+			$this->setupAddressReplacements($reps, "", $address, $nrtype);
+			$this->setupAddressReplacements($reps, "shipping", $shippingAddress, 	$nrtype);
+			$this->setupAddressReplacements($reps, "billing", $billingAddress, $nrtype);
 
-        $reps["[totalitems]"] = $order->getTotalItemCount();
-        $reps["[totalquantity]"] = $order->getTotalQtyOrdered();
+			$reps["[totalitems]"] = $order->getTotalItemCount();
+			$reps["[totalquantity]"] = $order->getTotalQtyOrdered();
+        
+			// TODO: Add list variables, like SKUs, shipping classes, categories, manufacturers, etc.
+			/*
+			// List-valued properties for custom variable checks:
+			// TODO: Also implement variable for:
+			//  - Shipping needed
+			//  - Downloads available
+			$lineitems = $order->get_items();
+			$skus = array();
+			$categories = array();
+			$tags = array();
+			$shippingclasses = array();
+			foreach ($lineitems as $l) {
+				$p = $order->get_product_from_item($l);
+				$skus[$p->get_sku()] = 1;
+				foreach (wc_get_product_terms( $p->id, 'product_cat') as $c) {
+					$categories[$c->slug] = 1;
+				}
+				foreach (wc_get_product_terms( $p->id, 'product_tag') as $c) {
+					$tags[$c->slug] = 1;
+				}
+				$shippingclasses[$p->get_shipping_class()] = 1;
+			}
+			$reps["[skus]"] = array_keys($skus);
+			$reps["[categories]"] = array_keys($categories);
+			$reps["[tags]"] = array_keys($tags);
+			$reps["[shippingclasses]"] = array_keys($shippingclasses);
+		*/
+		 }
+		if (isset($details->invoice)) {
+			$invoice = $details->invoice;
+			$reps["[invoiceid]"] = $invoice->getId();
+		}
     }
-    protected function setupShippingReplacements(&$reps, $order, $nrtype)
-    {
-        $reps["[shippingmethod]"] = $order->getShippingMethod();
-    }
+	public function setupUserReplacements (&$reps, $details, $nrtype) {
+		// TODO
+// 		$reps["[ipaddress]"]   = $details->customer_ip_address;
+// 		$reps["[userid]"]      = $details->get_user_id();
+	}
 
-    protected function setupShipmentReplacements (&$reps, $shipment, $order, $nrtype)
-    {
-        // TODO
-    }
-    protected function setupInvoiceReplacements (&$reps, $invoice, $order, $nrtype)
-    {
-        $reps["[invoiceid]"] = $invoice->getId();
-    }
-    protected function setupCreditMemoReplacements (&$reps, $creditmemo, $order, $nrtype)
-    {
-        // TODO
-    }
-    protected function setupReplacements($nrtype, $info)
-    {
-        $reps = array();
-        $order = $info['order'];
-        $this->setupDateTimeReplacements($reps, $nrtype);
-        $this->setupStoreReplacements($reps, $order, $nrtype);
-        $this->setupOrderReplacements($reps, $order, $nrtype);
-        $this->setupShippingReplacements($reps, $order, $nrtype);
-        if (isset($info['shipment'])) {
-            $this->setupShipmentReplacements($reps, $info['shipment'], $order, $nrtype);
-        }
-        if (isset($info['invoice'])) {
-            $this->setupInvoiceReplacements($reps, $info['invoice'], $order, $nrtype);
-        }
-        if (isset($info['creditmemo'])) {
-            $this->setupCreditMemoReplacements($reps, $info['creditmemo'], $order, $nrtype);
-        }
-// Mage::Log('Replacements at end of setupReplacements(nrtype='.$nrtype.'): '.print_r($reps,1), null, 'ordernumber.log');
-
-        return $reps;
-    }
-
-    protected function applyCustomVariables ($nrtype, $info, $reps, $customvars)
-    {
-        static $listvars = array("groups", "skus");
-// Mage::getSingleton('core/session')->addWarning('<pre>custom variables, conditionvar='.$conditionvar.', reps='.print_r($reps,1).', customvars='.print_r($customvars,1).'</pre>');
-        $order = $info['order'];
-        $customer = $order->getCustomer();
-        $address = $order->getShippingAddress();
-        $store = $order->getStore();
-// $this->logitem("Order: ", $order);
-        foreach ($customvars as $c) {
-            $conditionvar = $c['conditionvar'];
-
-            $found = false;
-            $compareval = null;
-
-            if (!$found && isset($reps[$conditionvar])) {
-                $found = true;
-                $compareval = $reps[$conditionvar];
-            } elseif (isset($reps['['.$conditionvar.']'])) {
-                $found = true;
-                $compareval = $reps['['.$conditionvar.']'];
-            } elseif (in_array($conditionvar, $listvars)) {
-                // TODO: Handle lists
-                $found = true;
-                $compareval = null /* TODO */;
-            } elseif ($order && $compareval = $order->getData($conditionvar)) {
-                // TODO: Handle order property
-                $found = true;
-            } elseif ($customer && $compareval = $customer->getData($conditionvar)) {
-                // TODO: Handle customer property
-                $found = true;
-            } elseif ($address && $compareval = $address->getData($conditionvar)) {
-                // TODO: Handle address property
-                $found = true;
-            } elseif ($store && $compareval = $store->getData($conditionvar)) {
-                // TODO: Handle store property
-                $found = true;
-            } else {
-                // TODO: Handle other possible properties!
-                // TODO: Print out warning that variable could not be found.
-//                 Mage::getSingleton('core/session')->addWarning($this->__('Unable to find variable "%s" used in the ordernumber custom variable definitions.', $conditionvar));
-            }
-            if ($found) {
-                if (is_array($compareval)) {
-                    $match = in_array($c['conditionval'], $compareval);
-                } else {
-                    $match = ($c['conditionval'] == $compareval);
-                }
-            }
-            if ($found && $match) {
-                $varname = '['.strtolower($c['newvar']).']';
-                $reps[$varname] = $c['newval'];
-            }
-// $this->logitem("Reps after $conditionvar: ", $order);
-        }
-        return $reps;
-    }
-
-    protected function doReplacements ($fmt, $reps)
-    {
-        // First, replace all random...[n] fields. This needs to be done with a regexp and a callback:
-        $fmt = preg_replace_callback ('/\[(random)(.*?)([0-9]*?)\]/', array($this, 'replaceRandom'), $fmt);
-        return str_ireplace (array_keys($reps), array_values($reps), $fmt);
-    }
-
-    public function replace_fields ($fmt, $nrtype, $info, $customvars)
-    {
-        $reps = $this->setupReplacements ($nrtype, $info);
-        $reps = $this->applyCustomVariables ($nrtype, $info, $reps, $customvars);
-// $this->logitem("All replacements after custom variables: ", $reps);
-        return $this->doReplacements($fmt, $reps);
+    public function setupShippingReplacements(&$reps, $details, $nrtype) {
+		if (isset($details->order)) {
+			$order = $details->order;
+			$reps["[shippingmethod]"] = $order->getShippingMethod();
+		}
     }
 
 

@@ -127,7 +127,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
      * @param array $websiteIds
      * @return array
      */
-    public function _getScoreStructureOptions($isAll = false, $websiteIds = array(),
+    public function _getStoreStructureOptions($isAll = false, $websiteIds = array(),
                                               $groupIds = array(), $storeIds = array()
     ) {
         $sstore = Mage::getSingleton('adminhtml/system_store');
@@ -200,7 +200,7 @@ class OpenTools_Ordernumber_Block_Counters extends Mage_Adminhtml_Block_System_C
 
     protected function _getNumberScopeSelect($name, $disabled=true, $current=null)
     {
-        $options = $this->_getScoreStructureOptions(true);
+        $options = $this->_getStoreStructureOptions(true);
         $html = $this->getLayout()->createBlock('core/html_select')
             ->setName($name)
             ->setClass($this->_getDisabled($disabled))

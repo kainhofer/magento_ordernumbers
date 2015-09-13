@@ -78,6 +78,17 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
         $creditmemo = $observer->getEvent()->getCreditmemo();
         return $this->handle_new_number('creditmemo', $creditmemo, $creditmemo->getOrder());
     }
+    
+    protected function getCustomVariables() {
+		$customvars = Mage::getStoreConfig('ordernumber/replacements', $storeId);
+		if (isset($customvars['replacements'])) {
+			$customvars = $customvars['replacements'];
+		}
+		if ($customvars) {
+			$customvars = unserialize($customvars);
+		}
+		return $customvars;
+    }
 
     public function handle_new_number ($nrtype, $object, $order)
     {
@@ -87,90 +98,56 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
         $enabled = Mage::getStoreConfig($cfgprefix.'/active', $storeId);
 
         if ($enabled && !$object->getId() && !$object->getOrdernumberProcessed()) {
-            // This trigger might be called twice, so ignore it the second time!
-            $object->setOrdernumberProcessed(true);
 
             $format = Mage::getStoreConfig($cfgprefix.'/format', $storeId);
             $scope = Mage::getStoreConfig($cfgprefix.'/scope', $storeId);
-            $reset = Mage::getStoreConfig($cfgprefix.'/reset', $storeId);
-            $counterfmt = Mage::getStoreConfig($cfgprefix.'/resetformat', $storeId);
-            $digits = Mage::getStoreConfig($cfgprefix.'/digits', $storeId);
-            $increment = Mage::getStoreConfig($cfgprefix.'/increment', $storeId);
-
-            // First, replace all variables:
+            $global = Mage::getStoreConfig($cfgprefix.'/global', $storeId);
+            $customvars = $this->getCustomVariables();
+			$ctrsettings = array(
+				"${nrtype}_format"  => '',
+				"${nrtype}_counter" => '',
+				"${nrtype}_global"  => $global,
+				"${nrtype}_padding" => 1,
+				"${nrtype}_step"    => 1,
+				"${nrtype}_start"   => 1,
+				"${nrtype}_scope"	=> $scope,
+			);
             $helper = Mage::helper('ordernumber');
-            $info = array('order'=>$order, $nrtype=>$object);
 
-            // The ordernumber/...numbers/reset contains some pre-defined counter names as
-            // well as enum values indicating certain behavior. Replace those by the actual
-            // counter names for the current counter:
-            switch ($reset) {
-                case 0:
-                    $format = $format . '|';
-                    break;
-                case 1:
-                    $format = $format . '|' . $format;
-                    break;
-                case -1:
-                    $format = $format . '|' . $counterfmt;
-                    break;
-                default:
-                    /* Pre-defined counter formats saved in the /reset config field */
-                    $counterfmt = $format . '|' . $reset;
-                    break;
-            }
-            $customvars = Mage::getStoreConfig('ordernumber/replacements', $storeId);
-            if (isset($customvars['replacements'])) {
-                $customvars = $customvars['replacements'];
-            }
-            if ($customvars) {
-                $customvars = unserialize($customvars);
-            }
-// Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
+			$info = array('order'=>$order, $nrtype=>$object, 'store'=>$store);
+			$newnumber = null;
+			$count = 0;
+			$created = false;
+			// Make up to 150 attempts to create a number...
+			while (empty($newnumber) && ($count<150)) {
+				$count += 1;
+				$newnumber = $helper->getHelper()->createNumber ($fmt, $nrtype, $info, $customvars, $ctrsettings);
+				
+				// Check whether that number is already in use. If so, attempt to create the next number:
+				$modelname=($nrtype=='order') ? 'sales/order' : ('sales/order_'.$nrtype);
+				$collection = Mage::getModel($modelname)->getCollection()->addFieldToFilter('increment_id',$newnumber);
+				if ($collection->getAllIds()) {
+					Mage::Log("$nrtype number $newnumber already in use, trying again", null, 'ordernumber.log');
+					//number already exists => next attempt in the loop
+					$newnumber = null;
+				} else {
+					$object->setIncrementId($newnumber);
+					$created = true;
+				}
+			}
+			if (!$created) {
+				Mage::Log("Unable to create $nrtype number for counter format $nr (name $counterfmt, scope $scopeId)...", null, 'ordernumber.log');
+			}
+			return $newnumber;
+		}
+	}
 
-            // Now apply the replacements
-            $nr = $helper->replace_fields ($format, $nrtype, $info, $customvars);
-
-            // Split at a | to get the number format and a possibly different counter increment format
-            // If a separate counter format is given after the |, use it, otherwise reuse the number format itself as counter format
-            $parts = explode ("|", $nr);
-            $format = $parts[0];
-            $counterfmt = $parts[(count($parts)>1)?1:0];
-
-            // Now find the next counter that does not lead to duplicate
-            $newnumber = null;
-            $model = $this->getModel();
-
-            $count = 0;
-            $created = false;
-            // Make up to 150 attempts to create a number...
-            while (empty($newnumber) && ($count<150)) {
-                $count += 1;
-
-                // Find the next counter value
-                $scopeId = '';
-                if ($scope>=1) $scopeId = $store->getWebsiteId();
-                if ($scope>=2) $scopeId .= '/' . $store->getGroupId();
-                if ($scope>=3) $scopeId .= '/' . $store->getStoreId();
-                $count = $model->getCounterValueIncremented($nrtype, $counterfmt, $increment, $scopeId);
-                $newnumber = str_replace ("#", sprintf('%0' . (int)$digits . 's', $count), $format);
-
-                // Check whether that number is already in use. If so, attempt to create the next number:
-                $modelname=($nrtype=='order') ? 'sales/order' : ('sales/order_'.$nrtype);
-                $collection = Mage::getModel($modelname)->getCollection()->addFieldToFilter('increment_id', $newnumber);
-                if ($collection->getAllIds()) {
-                    Mage::Log("$nrtype number $newnumber already in use, trying again", null, 'ordernumber.log');
-                    //number already exists => next attempt in the loop
-                    $newnumber = null;
-                } else {
-                    $object->setIncrementId($newnumber);
-                    $created = true;
-                }
-            }
-            if (!$created) {
-                Mage::Log("Unable to create $nrtype number for counter format $nr (name $counterfmt, scope $scopeId)...", null, 'ordernumber.log');
-            }
-        }
-    }
+//                 // Find the next counter value
+//                 $scopeId = '';
+//                 if ($scope>=1) $scopeId = $store->getWebsiteId();
+//                 if ($scope>=2) $scopeId .= '/' . $store->getGroupId();
+//                 if ($scope>=3) $scopeId .= '/' . $store->getStoreId();
+//                 $count = $model->getCounterValueIncremented($nrtype, $counterfmt, $increment, $scopeId);
+//                 $newnumber = str_replace ("#", sprintf('%0' . (int)$digits . 's', $count), $format);
 
 }
