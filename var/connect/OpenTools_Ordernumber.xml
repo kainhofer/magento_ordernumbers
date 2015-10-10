@@ -1,5 +1,5 @@
 <_>
-   <form_key>if50zYnKOzN3JQdl</form_key>
+   <form_key>FFPV5cJ66fwVSL4l</form_key>
    <name>OpenTools_Ordernumber</name>
    <channel>community</channel>
    <version_ids>
@@ -9,11 +9,12 @@
    <description>This extensions allows you to freely customize the order, invoice, shipment and creditmemo numbers. Even multiple counters are possible.</description>
    <license>OSL</license>
    <license_uri/>
-   <version>1.0.0</version>
+   <version>1.0.1</version>
    <stability>stable</stability>
    <notes>Our first feature-complete, thoroughly tested public release of the module. 
 
-Fixed some minor bugs compared to the pre-release versions.</notes>
+Fixed some minor bugs compared to the pre-release versions.
+Version 1.0.1 fixes some issues with Magento&apos;s developer mode (i.e. some warnings are fixed, which are turned into errors in developer mode).</notes>
    <authors>
       <name>
          <name>Reinhold Kainhofer</name>
@@ -46,8 +47,8 @@ Fixed some minor bugs compared to the pre-release versions.</notes>
             <max/>
          </max>
          <files>
-            <files>                      </files>
-            <files>                      </files>
+            <files>                       </files>
+            <files>                       </files>
          </files>
       </package>
       <extension>
@@ -99,4 +100,8 @@ Fixed some minor bugs compared to the pre-release versions.</notes>
          <ignore/>
       </ignore>
    </contents>
+   <page>1</page>
+   <limit>200</limit>
+   <folder/>
+   <package/>
 </_>
