@@ -24,6 +24,9 @@ class OpenTools_Ordernumber_Model_Backend_Counters extends Mage_Core_Model_Confi
         $helper = Mage::helper('ordernumber');
         $session = Mage::getSingleton('core/session');
         if (is_array($vals)) {
+			if (!isset($vals['counter'])) $vals['counter'] = array();
+			if (!isset($vals['new_counter_type'])) $vals['new_counter_type'] = array();
+			if (!isset($vals['deletecounter'])) $vals['deletecounter'] = array();
 // $helper->logitem("counter form values: ", $vals);
             $model = $this->getModel();
             // First, handle new counters
@@ -91,6 +94,7 @@ class OpenTools_Ordernumber_Model_Backend_Counters extends Mage_Core_Model_Confi
                 $session->addSuccess($helper->__('Successfully deleted counter \'%s\' (type: %s, scope: %s) with value %d',
                           $counter->getNumberFormat(), $model->readableType($counter->getNumberType()), $model->readableScope($counter->getNumberScope()), $counter->getCount()));
             }
+			$this->setValue('');
         }
     }
 }

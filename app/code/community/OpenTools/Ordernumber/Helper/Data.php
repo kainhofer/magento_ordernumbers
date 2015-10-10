@@ -3,9 +3,13 @@ class OpenTools_Ordernumber_Helper_Data extends Mage_Core_Helper_Abstract
 {
     public function logitem($label, $item)
     {
-        Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
-        Mage::Log(is_array($item)?$item:$item->debug(), null, 'ordernumber.log');
-        Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');
+        if (is_array($item)) {
+            Mage::Log($item, null, 'ordernumber.log');
+		} else {
+			Mage::Log($label . " " . get_class($item) . "\n", null, 'ordernumber.log');
+			Mage::Log($item->debug(), null, 'ordernumber.log');
+			Mage::Log(get_class_methods(get_class($item)), null, 'ordernumber.log');
+		}
     }
 
     /* Return a random "string" of the given length taken from the given alphabet */
