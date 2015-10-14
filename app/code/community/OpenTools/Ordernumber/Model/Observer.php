@@ -123,6 +123,8 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
             }
             if ($customvars) {
                 $customvars = unserialize($customvars);
+            } else {
+                $customvars = array();
             }
 // Mage::Log('customvars: '.print_r($customvars,1), null, 'ordernumber.log');
 

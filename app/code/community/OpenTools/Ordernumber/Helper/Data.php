@@ -180,7 +180,7 @@ class OpenTools_Ordernumber_Helper_Data extends Mage_Core_Helper_Abstract
         $customer = $order->getCustomer();
         $address = $order->getShippingAddress();
         $store = $order->getStore();
-// $this->logitem("Order: ", $order);
+// $this->logitem("customvars: ", $customvars);
         foreach ($customvars as $c) {
             $conditionvar = $c['conditionvar'];
 
