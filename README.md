@@ -1,6 +1,6 @@
 # OpenTools_Ordernumber
 
-This is a module to modify the order, invoice, shipment and credit memo numbers in Magento. Many variables and counter options are available in the format string.
+This is a module to modify the order, invoice, shipment and credit memo numbers in Magento 1.9 (NOT in Magento 2 - feel free to fork this module and update it to Magento 2!). Many variables and counter options are available in the format string.
 
 ## Installation
 
