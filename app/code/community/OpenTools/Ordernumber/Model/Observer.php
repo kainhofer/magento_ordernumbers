@@ -102,20 +102,24 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
             // The ordernumber/...numbers/reset contains some pre-defined counter names as
             // well as enum values indicating certain behavior. Replace those by the actual
             // counter names for the current counter:
-            switch ($reset) {
-                case 0:
-                    $format = $format . '|';
-                    break;
-                case 1:
-                    $format = $format . '|' . $format;
-                    break;
-                case -1:
-                    $format = $format . '|' . $counterfmt;
-                    break;
-                default:
-                    /* Pre-defined counter formats saved in the /reset config field */
-                    $format = $format . '|' . $reset;
-                    break;
+            if (is_string($reset)) {
+                $format = $format . '|' . $reset;
+            } else {
+                switch ($reset) {
+                    case 0:
+                        $format = $format . '|';
+                        break;
+                    case 1:
+                        $format = $format . '|' . $format;
+                        break;
+                    case -1:
+                        $format = $format . '|' . $counterfmt;
+                        break;
+                    default:
+                        /* Pre-defined counter formats saved in the /reset config field */
+                        $format = $format . '|' . $reset;
+                        break;
+                }
             }
             $customvars = Mage::getStoreConfig('ordernumber/replacements', $storeId);
             if (isset($customvars['replacements'])) {
