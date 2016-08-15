@@ -114,7 +114,7 @@ class OpenTools_Ordernumber_Model_Observer extends Mage_Core_Model_Abstract
                     break;
                 default:
                     /* Pre-defined counter formats saved in the /reset config field */
-                    $counterfmt = $format . '|' . $reset;
+                    $format = $format . '|' . $reset;
                     break;
             }
             $customvars = Mage::getStoreConfig('ordernumber/replacements', $storeId);
